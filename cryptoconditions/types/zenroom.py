@@ -1,3 +1,4 @@
+import string
 import base58
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from multiprocessing import Manager, Process
@@ -42,7 +43,7 @@ class ZenroomSha256(BaseSha256):
     SIGNATURE_LENGTH = 64
 
     # TODO docstrings
-    def __init__(self, *, script, data, keys):
+    def __init__(self, *, script=None, data=None, keys=None):
         """
         ZENROOM: Zenroom signature condition.
 
@@ -58,13 +59,15 @@ class ZenroomSha256(BaseSha256):
             data (dictionary): data fixed in the output of the transaction
 
         """
-        self._script = self._validate_script(script)
-        if keys is not None:
-            self._validate_keys(keys)
+        self.script = script
         self._keys = keys
-        if data is not None:
-            self._validate_data(data)
         self._data = data
+        if keys is not None:
+            self._keys = self._validate_keys(keys)
+        if data is not None:
+            self._data = self._validate_data(data)
+        if script is not None:
+            self._script = self._validate_script(str(script))
 
     def _validate_script(self, script):
         # Any string could be a script, the only way to verify if it is valid
@@ -80,10 +83,13 @@ class ZenroomSha256(BaseSha256):
 
     @script.setter
     def script(self, script):
-        self._script = self._validate_script(script)
+        if script is not None:
+            self._script = self._validate_script(str(script))
 
     # All string must be ascii
     def _validate_keys(self, keys):
+        if isinstance(keys,bytes):
+            keys = json.loads(keys.decode())
         if not isinstance(keys, dict):
             raise TypeError('the keys must be a dictionary')
         for name in keys.keys():
@@ -102,7 +108,8 @@ class ZenroomSha256(BaseSha256):
 
     @keys.setter
     def keys(self, keys):
-        self._keys = self._validate_keys(keys)
+        if keys is not None:
+            self._keys = self._validate_keys(keys)
 
     def _validate_data(self, data):
         # Any dictionary (that can be serialized in json) could be valid data
@@ -118,7 +125,8 @@ class ZenroomSha256(BaseSha256):
 
     @data.setter
     def data(self, data):
-        self._data = self._validate_data(data)
+        if data is not None:
+            self._data = self._validate_data(data)
 
     @property
     def json_keys(self):
