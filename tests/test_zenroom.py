@@ -130,7 +130,6 @@ def test_zenroom():
         'public_keys': (zen_public_keys['Alice']['ecdh_public_key'], ),
     }
 
-
     input_ = {
         'fulfillment': None,
         'fulfills': None,
@@ -191,7 +190,6 @@ def test_zenroom():
         separators=(',', ':'),
         ensure_ascii=False,
     )
-
 
     # SHA3: hash the serialized id-less transaction to generate the id
     shared_creation_txid = hashlib.sha3_256(json_str_tx.encode()).hexdigest()
