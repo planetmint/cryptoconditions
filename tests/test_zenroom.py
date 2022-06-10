@@ -98,14 +98,14 @@ def test_zenroom():
     version = '2.0'
 
     fulfill_script = """Rule input encoding base58
-Rule output encoding base58
-Scenario 'ecdh': Bob verifies the signature from Alice
-Given I have a 'ecdh public key' from 'Alice'
-Given that I have a 'string dictionary' named 'houses' inside 'asset'
-Given I have a 'signature' named 'data.signature' inside 'result'
-When I verify the 'houses' has a signature in 'data.signature' by 'Alice'
-Then print the string 'ok'
-"""
+    Rule output encoding base58
+    Scenario 'ecdh': Bob verifies the signature from Alice
+    Given I have a 'ecdh public key' from 'Alice'
+    Given that I have a 'string dictionary' named 'houses' inside 'asset'
+    Given I have a 'signature' named 'data.signature' inside 'result'
+    When I verify the 'houses' has a signature in 'data.signature' by 'Alice'
+    Then print the string 'ok'
+    """
     # CRYPTO-CONDITIONS: instantiate an Ed25519 crypto-condition for buyer
     zenSha = ZenroomSha256(script=fulfill_script, keys=zen_public_keys, data=data)
 
@@ -157,14 +157,15 @@ Then print the string 'ok'
 
     print("====== GENERATE RESULT (METADATA) =======")
     condition_script = """Rule input encoding base58
-Rule output encoding base58
-Scenario 'ecdh': create the signature of an object
-Given I have the 'keyring'
-Given that I have a 'string dictionary' named 'houses' inside 'asset'
-When I create the signature of 'houses'
-When I rename the 'signature' to 'data.signature'
-Then print the 'data.signature'
-"""
+        Rule output encoding base58
+        Scenario 'ecdh': create the signature of an object
+        Given I have the 'keyring'
+        Given that I have a 'string dictionary' named 'houses' inside 'asset'
+        When I create the signature of 'houses'
+        When I rename the 'signature' to 'data.signature'
+        Then print the 'data.signature'
+        """
+
     # THIS FILLS THE METADATA WITH THE RESULT
     try:
         assert(not zenSha.validate(message=message))
