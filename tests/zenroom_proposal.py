@@ -34,7 +34,7 @@ GENERATE_KEYPAIR = \
     Then print data"""
 
 def genkey():
-    return json.loads(ZenroomSha256.run_zenroom(GENERATE_KEYPAIR).output)['keys']
+    return json.loads(ZenroomSha256.run_zenroom(GENERATE_KEYPAIR).output)['keyring']
 
 # There is not a unique way of generating the public
 # key, for example, for the testnet I don't want the
@@ -49,7 +49,7 @@ SK_TO_PK = \
     Rule output encoding base58
     Scenario 'ecdh': Create the keypair
     Given that I am known as '{}'
-    Given I have the 'keys'
+    Given I have the 'keyring'
     When I create the ecdh public key
     When I create the testnet address
     Then print my 'ecdh public key'
@@ -57,7 +57,7 @@ SK_TO_PK = \
 
 def sk2pk(name, keys):
     return json.loads(ZenroomSha256.run_zenroom(SK_TO_PK.format(name),
-                                                keys={'keys': keys}).output)
+                                                keys={'keyring': keys}).output)
 # Alice assert the composition of the houses
 
 # zen_public_keys is an identity dictionary
@@ -158,19 +158,16 @@ print("====== GENERATE RESULT (METADATA) =======")
 condition_script = """Rule input encoding base58
     Rule output encoding base58
     Scenario 'ecdh': create the signature of an object
-    Given I have the 'keys'
+    Given I have the 'keyring'
     Given that I have a 'string dictionary' named 'houses' inside 'asset'
     When I create the signature of 'houses'
     When I rename the 'signature' to 'data.signature'
     Then print the 'data.signature'
     """
-
 # THIS FILLS THE METADATA WITH THE RESULT
 try:
     assert(not zenSha.validate(message=message))
-except JSONDecodeError:
-    pass
-except ValueError:
+except:
     pass
 
 message = zenSha.sign(message, condition_script, alice)
