@@ -219,7 +219,7 @@ class ZenroomSha256(BaseSha256):
             data['output'] = self.data
 
         result = ZenroomSha256.run_zenroom(condition_script,
-                                           {"keys": private_keys},
+                                           {"keyring": private_keys},
                                            data)
         message['metadata'] = {'data': json.loads(result.output),
                                'result': 'ok'}
