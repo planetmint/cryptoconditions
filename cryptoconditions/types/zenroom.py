@@ -4,6 +4,7 @@ from base64 import urlsafe_b64decode, urlsafe_b64encode
 from multiprocessing import Manager, Process
 from zenroom import zencode_exec
 import json
+from ast import literal_eval
 from json.decoder import JSONDecodeError
 from pyasn1.codec.der.encoder import encode as der_encode
 from pyasn1.codec.native.decoder import decode as nat_decode
@@ -286,9 +287,9 @@ class ZenroomSha256(BaseSha256):
             data['keys']))
 
     def parse_asn1_dict_payload(self, data):
-        self._script = data['script']
-        self._data = data['data']
-        self._keys = data['keys']
+        self._script = data['script'].decode()
+        self._data = literal_eval(data['data'].decode('utf8'))
+        self._keys = literal_eval(data['keys'].decode('utf8'))
 
     def validate(self, *, message):
         """
