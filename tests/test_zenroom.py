@@ -11,7 +11,7 @@
 import json
 
 import hashlib
-from cryptoconditions import ZenroomSha256
+from cryptoconditions import ZenroomSha256, Fulfillment
 from json.decoder import JSONDecodeError
 
 # from zenroom import zencode_exec
@@ -102,8 +102,8 @@ def test_zenroom():
     Scenario 'ecdh': Bob verifies the signature from Alice
     Given I have a 'ecdh public key' from 'Alice'
     Given that I have a 'string dictionary' named 'houses' inside 'asset'
-    Given I have a 'signature' named 'data.signature' inside 'result'
-    When I verify the 'houses' has a signature in 'data.signature' by 'Alice'
+    Given I have a 'signature' named 'signature' inside 'result'
+    When I verify the 'houses' has a signature in 'signature' by 'Alice'
     Then print the string 'ok'
     """
     # CRYPTO-CONDITIONS: instantiate an Ed25519 crypto-condition for buyer
@@ -161,8 +161,7 @@ def test_zenroom():
         Given I have the 'keyring'
         Given that I have a 'string dictionary' named 'houses' inside 'asset'
         When I create the signature of 'houses'
-        When I rename the 'signature' to 'data.signature'
-        Then print the 'data.signature'
+        Then print the 'signature'
         """
 
     # THIS FILLS THE METADATA WITH THE RESULT
@@ -173,32 +172,17 @@ def test_zenroom():
 
     message = zenSha.sign(message, condition_script, alice)
     assert(zenSha.validate(message=message))
-    # now metadata looks like
-    # 'metadata': {'result': {'data.signature': {'r': 'fdoan0GYo9RGP8y0fq+PKZ9Q1V8+VqJtBkSMB1tUnGQ=', 's': 'RnJCEepYJcVgFG/Y6cRc/2DWPaz5Pe5NpdRWegrZk5A='}}}
 
     # CRYPTO-CONDITIONS: generate the fulfillment uri
     fulfillment_uri = zenSha.serialize_uri()
 
-    # add the fulfillment uri (signature)
-    token_creation_tx['inputs'][0]['fulfillment'] = fulfillment_uri
-    print(token_creation_tx)
+    ff_from_uri = ZenroomSha256.from_uri(fulfillment_uri)
+    ff_from_uri_ = Fulfillment.from_uri(fulfillment_uri)
+    
+    assert ff_from_uri.script == zenSha.script
+    assert ff_from_uri.data == zenSha.data
+    assert ff_from_uri.keys == zenSha.keys
 
-    # JSON: serialize the id-less transaction to a json formatted string
-    json_str_tx = json.dumps(
-        token_creation_tx,
-        sort_keys=True,
-        separators=(',', ':'),
-        ensure_ascii=False,
-    )
-
-    # SHA3: hash the serialized id-less transaction to generate the id
-    shared_creation_txid = hashlib.sha3_256(json_str_tx.encode()).hexdigest()
-
-    # add the id
-    token_creation_tx['id'] = shared_creation_txid
-
-    # exit()
-    # send CREATE tx into the bdb network
-    # returned_creation_tx = bdb.transactions.send_async(token_creation_tx)
-
-    # print(returned_creation_tx)
+    assert ff_from_uri_.script == zenSha.script
+    assert ff_from_uri_.data == zenSha.data
+    assert ff_from_uri_.keys == zenSha.keys
