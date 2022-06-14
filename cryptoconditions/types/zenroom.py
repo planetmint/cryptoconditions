@@ -60,14 +60,14 @@ class ZenroomSha256(BaseSha256):
 
         """
         self.script = script
-        self._keys = keys
-        self._data = data
+        self.keys = keys
+        self.data = data
         if keys is not None:
-            self._keys = self._validate_keys(keys)
+            self.keys = self._validate_keys(keys)
         if data is not None:
-            self._data = self._validate_data(data)
+            self.data = self._validate_data(data)
         if script is not None:
-            self._script = self._validate_script(str(script))
+            self.script = self._validate_script(str(script))
 
     def _validate_script(self, script):
         # Any string could be a script, the only way to verify if it is valid
@@ -79,12 +79,12 @@ class ZenroomSha256(BaseSha256):
 
     @property
     def script(self):
-        return self._script
+        return self.script
 
     @script.setter
     def script(self, script):
         if script is not None:
-            self._script = self._validate_script(str(script))
+            self.script = self._validate_script(str(script))
 
     # All string must be ascii
     def _validate_keys(self, keys):
@@ -104,12 +104,12 @@ class ZenroomSha256(BaseSha256):
 
     @property
     def keys(self):
-        return self._keys or b''
+        return self.keys or b''
 
     @keys.setter
     def keys(self, keys):
         if keys is not None:
-            self._keys = self._validate_keys(keys)
+            self.keys = self._validate_keys(keys)
 
     def _validate_data(self, data):
         # Any dictionary (that can be serialized in json) could be valid data
@@ -121,12 +121,12 @@ class ZenroomSha256(BaseSha256):
 
     @property
     def data(self):
-        return self._data or b''
+        return self.data or b''
 
     @data.setter
     def data(self, data):
         if data is not None:
-            self._data = self._validate_data(data)
+            self.data = self._validate_data(data)
 
     @property
     def json_keys(self):
@@ -174,6 +174,7 @@ class ZenroomSha256(BaseSha256):
         return {
             'type': ZenroomSha256.TYPE_NAME,
             'script': base58.b58encode(json.dumps(self.script)),
+            'data': base58.b58encode(json.dumps(self.data)),
             'keys': base58.b58encode(json.dumps(self.keys)),
         }
 
@@ -238,6 +239,8 @@ class ZenroomSha256(BaseSha256):
             'type': ZenroomSha256.TYPE_NAME,
             'script': base64_remove_padding(
                 urlsafe_b64encode(self.script)),
+            'data': base64_remove_padding(
+                urlsafe_b64encode(self.data)),
             'keys': base64_remove_padding(
                 urlsafe_b64encode(self.keys)),
             # 'conf': base64_remove_padding(
@@ -258,6 +261,8 @@ class ZenroomSha256(BaseSha256):
         """
         if data.get('script'):
             self.script = base58.b58decode(data['script'])
+        if data.get('data'):
+            self.keys = base58.b58decode(data['data'])
         if data.get('keys'):
             self.keys = base58.b58decode(data['keys'])
 
@@ -275,11 +280,14 @@ class ZenroomSha256(BaseSha256):
         """
         self.script = urlsafe_b64decode(base64_add_padding(
             data['script']))
+        self.data = urlsafe_b64decode(base64_add_padding(
+            data['data']))
         self.keys = urlsafe_b64decode(base64_add_padding(
             data['keys']))
 
     def parse_asn1_dict_payload(self, data):
         self.script = data['script']
+        self.data = data['data']
         self.keys = data['keys']
 
     def validate(self, *, message):
