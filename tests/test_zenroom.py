@@ -20,51 +20,6 @@ from json.decoder import JSONDecodeError
 # # bdb_root_url = 'https://ipdb3.riddleandcode.com'
 # bdb_root_url = 'http://localhost:9984/'
 # bdb = BigchainDB(bdb_root_url)
-<<<<<<< HEAD
-def test_zenroom2():
-    
-    # The procedure to generate the keyring cannot be
-    # fixed in the code base, it depends on the particular
-    # smart contract
-    GENERATE_KEYPAIR = \
-        """Rule input encoding base58
-        Rule output encoding base58
-        Scenario 'ecdh': Create the keypair
-        Given that I am known as 'Pippo'
-        When I create the ecdh key
-        When I create the testnet key
-        Then print data"""
-
-    def genkey():
-        return json.loads(ZenroomSha256.run_zenroom(GENERATE_KEYPAIR).output)['keys']
-
-    # There is not a unique way of generating the public
-    # key, for example, for the testnet I don't want the
-    # public key but the address (but there could exist
-    # a script in which the user want the public key and
-    # not the address)
-    # Thus we cannot fix it inside the script
-
-    # secret key to public key
-    SK_TO_PK = \
-        """Rule input encoding base58
-        Rule output encoding base58
-        Scenario 'ecdh': Create the keypair
-        Given that I am known as '{}'
-        Given I have the 'keys'
-        When I create the ecdh public key
-        When I create the testnet address
-        Then print my 'ecdh public key'
-        Then print my 'testnet address'"""
-
-    def sk2pk(name, keys):
-        return json.loads(ZenroomSha256.run_zenroom(SK_TO_PK.format(name),
-                                                    keys={'keys': keys}).output)
-    # Alice assert the composition of the houses
-
-    # zen_public_keys is an identity dictionary
-
-=======
 
 # The procedure to generate the keyring cannot be
 # fixed in the code base, it depends on the particular
@@ -108,7 +63,6 @@ def sk2pk(name, keys):
 # zen_public_keys is an identity dictionary
 
 def test_zenroom():
->>>>>>> main
     alice, bob = genkey(), genkey()
     print("============== ALICE KEYPAIR =================")
     print(alice)
@@ -176,10 +130,6 @@ def test_zenroom():
         'public_keys': (zen_public_keys['Alice']['ecdh_public_key'], ),
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
     input_ = {
         'fulfillment': None,
         'fulfills': None,
@@ -218,13 +168,7 @@ def test_zenroom():
     # THIS FILLS THE METADATA WITH THE RESULT
     try:
         assert(not zenSha.validate(message=message))
-<<<<<<< HEAD
-    except JSONDecodeError:
-        pass
-    except ValueError:
-=======
     except:
->>>>>>> main
         pass
 
     message = zenSha.sign(message, condition_script, alice)
@@ -247,10 +191,6 @@ def test_zenroom():
         ensure_ascii=False,
     )
 
-<<<<<<< HEAD
-
-=======
->>>>>>> main
     # SHA3: hash the serialized id-less transaction to generate the id
     shared_creation_txid = hashlib.sha3_256(json_str_tx.encode()).hexdigest()
 
@@ -262,7 +202,3 @@ def test_zenroom():
     # returned_creation_tx = bdb.transactions.send_async(token_creation_tx)
 
     # print(returned_creation_tx)
-<<<<<<< HEAD
-
-=======
->>>>>>> main
