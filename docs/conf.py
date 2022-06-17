@@ -1,4 +1,4 @@
-import sphinx_rtd_theme
+#import sphinx_rtd_theme
 import datetime
 
 _version = {}
@@ -31,7 +31,7 @@ copyright = str(now.year) + ', Cryptoconditions Contributors'
 author = 'Cryptoconditions Contributors'
 version = _version['__short_version__']
 release = _version['__version__']
-language = None
+language = 'en'
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 todo_include_todos = True
