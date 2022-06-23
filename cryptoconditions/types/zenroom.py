@@ -78,14 +78,6 @@ class ZenroomSha256(BaseSha256):
             keys = json.loads(keys.decode())
         if not isinstance(keys, dict):
             raise TypeError('the keys must be a dictionary')
-        for name in keys.keys():
-            if not isinstance(name, str):
-                raise TypeError('{} is not the name of a user', name)
-            for k in keys[name].keys():
-                if not isinstance(k, str):
-                    raise TypeError('key type must be a string', name)
-                if not isinstance(keys[name][k], str):
-                    raise TypeError('the output of zencode keys must be a string', name)
         dict_keys = keys.keys()
         if 'asset' in dict_keys or 'metadata' in dict_keys:
             raise TypeError('keys cannot have a asset or a metadata key')
