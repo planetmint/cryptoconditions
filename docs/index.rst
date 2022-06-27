@@ -6,7 +6,6 @@
     installation
     usage
     examples
-    libref
     contributing
 
 

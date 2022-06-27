@@ -23,53 +23,9 @@ The following condition & fulfillment pairs exist:
 
 - Zenroom-SHA-256 
 
+The Zenroom-SHA-256 condition & fulfillment is explained in more detail. Please have a look at the unit tests
+at `cryptoconditions <https://github.com/planetmint/cryptoconditions/tree/main/tests/types>`_, Ed25519-SHA256 and Threshold-SHA-256 examples are listed there.
 
-ED25519-SHA-256
-^^^^^^^^^^^^^^^
-
-Condition
-"""""""""
-
-Fulfillment
-"""""""""""
-
-
-Preimage-SHA-256
-^^^^^^^^^^^^^^^^
-
-Condition
-"""""""""
-
-Fulfillment
-"""""""""""
-
-
-Prefix-SHA-256
-^^^^^^^^^^^^^^
-Condition
-"""""""""
-
-Fulfillment
-"""""""""""
-
-
-RSA-SHA-256
-^^^^^^^^^^^
-Condition
-"""""""""
-
-Fulfillment
-"""""""""""
-
-
-THRESHOLD-SHA-256
-^^^^^^^^^^^^^^^^^
-
-Condition
-"""""""""
-
-Fulfillment
-"""""""""""
 
 
 ZENROOM-SHA-256
@@ -142,3 +98,19 @@ The message being signed is required to be a JSON document and needs to contain 
   "metadata" : {
     "result": {"output": ["ok"]}
   }
+
+..
+  ED25519-SHA-256
+  ^^^^^^^^^^^^^^^
+
+  Preimage-SHA-256
+  ^^^^^^^^^^^^^^^^
+
+  Prefix-SHA-256
+  ^^^^^^^^^^^^^^
+
+  RSA-SHA-256
+  ^^^^^^^^^^^
+
+  THRESHOLD-SHA-256
+  ^^^^^^^^^^^^^^^^^
