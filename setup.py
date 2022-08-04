@@ -37,7 +37,7 @@ docs_require = [
     "sphinx-press-theme>=0.8.0",
 ]
 
-install_requires=[
+install_requires = [
     "zenroom==2.1.0.dev1655293214",
     "base58==2.1.0",
     "PyNaCl==1.4.0",

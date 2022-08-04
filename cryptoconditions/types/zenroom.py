@@ -13,6 +13,7 @@ from cryptoconditions.crypto import base64_add_padding, base64_remove_padding
 from cryptoconditions.types.base_sha256 import BaseSha256
 from cryptoconditions.schemas.fingerprint import ZenroomFingerprintContents
 
+
 class ZenroomSha256(BaseSha256):
 
     TYPE_ID = 5
@@ -178,13 +179,10 @@ class ZenroomSha256(BaseSha256):
             # go on without setting the asset in the data
             pass
 
-        result = zencode_exec(condition_script,
-                              keys=json.dumps({"keyring": private_keys}),
-                              data=json.dumps(data))
+        result = zencode_exec(condition_script, keys=json.dumps({"keyring": private_keys}), data=json.dumps(data))
         if not "metadata" in message.keys() or not message["metadata"]:
             message["metadata"] = {}
-        message["metadata"].update({"data": json.loads(result.output),
-                                    "logs": result.logs})
+        message["metadata"].update({"data": json.loads(result.output), "logs": result.logs})
         return json.dumps(message)
 
     # TODO Adapt according to outcomes of
@@ -269,7 +267,6 @@ class ZenroomSha256(BaseSha256):
         except KeyError:
             pass
 
-
         # There could also be some data in the metadata,
         # this is an output of the condition script which
         # become an input for the fulfillment script
@@ -279,9 +276,7 @@ class ZenroomSha256(BaseSha256):
         except KeyError:
             pass
         # We can put pulic keys either in the keys or the data of zenroom
-        result = zencode_exec(self.script,
-                              keys=json.dumps(self._keys),
-                              data=json.dumps(data))
+        result = zencode_exec(self.script, keys=json.dumps(self._keys), data=json.dumps(data))
 
         try:
             message["metadata"]["result"]
