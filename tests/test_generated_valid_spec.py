@@ -22,7 +22,6 @@ from base64 import urlsafe_b64decode
 
 
 class TestVector:
-
     def test_condition_from_binary_to_serialize_uri(self, test_vector):
         """
 
@@ -32,6 +31,7 @@ class TestVector:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(test_vector.condition_binary)
         assert condition.serialize_uri() == test_vector.condition_uri
 
@@ -44,6 +44,7 @@ class TestVector:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(test_vector.condition_uri)
         assert condition.serialize_binary() == test_vector.condition_binary
 
@@ -56,6 +57,7 @@ class TestVector:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(test_vector.fulfillment)
         assert fulfillment.serialize_uri() == test_vector.fulfillment
 
@@ -68,6 +70,7 @@ class TestVector:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(test_vector.fulfillment)
         assert fulfillment.validate(message=test_vector.message)
 
@@ -80,6 +83,7 @@ class TestVector:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(test_vector.condition_binary)
         assert condition.validate()
 
@@ -92,6 +96,7 @@ class TestVector:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(test_vector.condition_uri)
         assert condition.validate()
 
@@ -104,9 +109,9 @@ class TestVector:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(test_vector.fulfillment)
-        assert (fulfillment.fingerprint_contents ==
-                test_vector.fingerprint_contents)
+        assert fulfillment.fingerprint_contents == test_vector.fingerprint_contents
 
     def test_fulfillment_condition_generation(self, test_vector):
         """
@@ -118,6 +123,7 @@ class TestVector:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(test_vector.fulfillment)
         condition = fulfillment.condition
         assert condition.serialize_uri() == test_vector.condition_uri
@@ -131,6 +137,7 @@ class TestVector:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(test_vector.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == test_vector.fulfillment
@@ -142,7 +149,6 @@ class TestVector:
 #                                                                             #
 ###############################################################################
 class TestMinimalPreimage:
-
     def test_condition_from_binary_to_serialize_uri(self, minimal_preimage):
         """
 
@@ -152,6 +158,7 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Condition
+
         buffer_ = minimal_preimage.condition_binary
         condition = Condition.from_binary(buffer_)
         assert condition.serialize_uri() == minimal_preimage.condition_uri
@@ -165,10 +172,10 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(minimal_preimage.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                minimal_preimage.condition_binary)
+        assert generated_condition_binary == minimal_preimage.condition_binary
 
     def test_fulfillment_parsing(self, minimal_preimage):
         """
@@ -179,6 +186,7 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_preimage.fulfillment)
         assert fulfillment.serialize_uri() == minimal_preimage.fulfillment
 
@@ -191,6 +199,7 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_preimage.fulfillment)
         assert fulfillment.validate(minimal_preimage.message)
 
@@ -203,6 +212,7 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_preimage.condition_binary)
         assert condition.validate()
 
@@ -215,9 +225,9 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_preimage.fulfillment)
-        assert (fulfillment.fingerprint_contents ==
-                minimal_preimage.fingerprint_contents)
+        assert fulfillment.fingerprint_contents == minimal_preimage.fingerprint_contents
 
     def test_fulfillment_condition_generation(self, minimal_preimage):
         """
@@ -229,6 +239,7 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_preimage.fulfillment)
         condition = fulfillment.condition
         assert condition.serialize_uri() == minimal_preimage.condition_uri
@@ -242,12 +253,12 @@ class TestMinimalPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(minimal_preimage.json)
         assert fulfillment.serialize_uri() == minimal_preimage.fulfillment
 
 
 class TestMinimalPrefix:
-
     def test_condition_from_binary_to_serialize_uri(self, minimal_prefix):
         """
 
@@ -257,6 +268,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_prefix.condition_binary)
         assert condition.serialize_uri() == minimal_prefix.condition_uri
 
@@ -269,6 +281,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(minimal_prefix.condition_uri)
         assert condition.serialize_binary() == minimal_prefix.condition_binary
 
@@ -281,6 +294,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_prefix.fulfillment)
         assert fulfillment.serialize_uri() == minimal_prefix.fulfillment
 
@@ -293,6 +307,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_prefix.fulfillment)
         assert fulfillment.validate(minimal_prefix.message)
 
@@ -305,6 +320,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_prefix.condition_binary)
         assert condition.validate()
 
@@ -317,6 +333,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_prefix.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == minimal_prefix.fingerprint_contents
@@ -331,6 +348,7 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_prefix.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -345,13 +363,13 @@ class TestMinimalPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(minimal_prefix.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == minimal_prefix.fulfillment
 
 
 class TestMinimalThreshold:
-
     def test_condition_from_binary_to_serialize_uri(self, minimal_threshold):
         """
 
@@ -361,6 +379,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Condition
+
         buffer_ = minimal_threshold.condition_binary
         condition = Condition.from_binary(buffer_)
         assert condition.serialize_uri() == minimal_threshold.condition_uri
@@ -374,10 +393,10 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(minimal_threshold.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                minimal_threshold.condition_binary)
+        assert generated_condition_binary == minimal_threshold.condition_binary
 
     def test_fulfillment_parsing(self, minimal_threshold):
         """
@@ -388,6 +407,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_threshold.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == minimal_threshold.fulfillment
@@ -401,6 +421,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_threshold.fulfillment)
         assert fulfillment.validate(minimal_threshold.message)
 
@@ -413,6 +434,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_threshold.condition_binary)
         assert condition.validate()
 
@@ -425,6 +447,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_threshold.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == minimal_threshold.fingerprint_contents
@@ -439,6 +462,7 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_threshold.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -453,13 +477,13 @@ class TestMinimalThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(minimal_threshold.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == minimal_threshold.fulfillment
 
 
 class TestMinimalRsa:
-
     def test_condition_from_binary_to_serialize_uri(self, minimal_rsa):
         """
 
@@ -469,6 +493,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_rsa.condition_binary)
         assert condition.serialize_uri() == minimal_rsa.condition_uri
 
@@ -481,6 +506,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(minimal_rsa.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == minimal_rsa.condition_binary
@@ -494,6 +520,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_rsa.fulfillment)
         assert fulfillment.serialize_uri() == minimal_rsa.fulfillment
 
@@ -506,6 +533,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_rsa.fulfillment)
         assert fulfillment.validate(minimal_rsa.message)
 
@@ -518,6 +546,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_rsa.condition_binary)
         assert condition.validate()
 
@@ -530,6 +559,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_rsa.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == minimal_rsa.fingerprint_contents
@@ -544,6 +574,7 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_rsa.fulfillment)
         condition = fulfillment.condition
         assert condition.serialize_uri() == minimal_rsa.condition_uri
@@ -557,12 +588,12 @@ class TestMinimalRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(minimal_rsa.json)
         assert fulfillment.serialize_uri() == minimal_rsa.fulfillment
 
 
 class TestMinimalEd25519:
-
     def test_condition_from_binary_to_serialize_uri(self, minimal_ed25519):
         """
 
@@ -572,6 +603,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_ed25519.condition_binary)
         assert condition.serialize_uri() == minimal_ed25519.condition_uri
 
@@ -584,6 +616,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(minimal_ed25519.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == minimal_ed25519.condition_binary
@@ -597,6 +630,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_ed25519.fulfillment)
         generated_fulfillment_uri = fulfillment.serialize_uri()
         assert generated_fulfillment_uri == minimal_ed25519.fulfillment
@@ -610,6 +644,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_ed25519.fulfillment)
         assert fulfillment.validate(message=minimal_ed25519.message)
 
@@ -622,6 +657,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(minimal_ed25519.condition_binary)
         assert condition.validate()
 
@@ -634,6 +670,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_ed25519.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == minimal_ed25519.fingerprint_contents
@@ -648,6 +685,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(minimal_ed25519.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -662,6 +700,7 @@ class TestMinimalEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(minimal_ed25519.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == minimal_ed25519.fulfillment
@@ -678,9 +717,10 @@ class TestMinimalEd25519:
         """
         from cryptoconditions.types.ed25519 import Ed25519Sha256
         from cryptoconditions.crypto import base64_add_padding
+
         fulfillment = Ed25519Sha256(
             public_key=urlsafe_b64decode(
-                base64_add_padding(minimal_ed25519.json['publicKey'])
+                base64_add_padding(minimal_ed25519.json["publicKey"])
             )
         )
         signature = fulfillment.sign(
@@ -688,7 +728,8 @@ class TestMinimalEd25519:
             private_key=minimal_ed25519.private_key,
         )
         assert signature == urlsafe_b64decode(
-            base64_add_padding(minimal_ed25519.json['signature']))
+            base64_add_padding(minimal_ed25519.json["signature"])
+        )
 
 
 ###############################################################################
@@ -697,7 +738,6 @@ class TestMinimalEd25519:
 #                                                                             #
 ###############################################################################
 class TestBasicPreimage:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_preimage):
         """
 
@@ -707,6 +747,7 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Condition
+
         buffer_ = basic_preimage.condition_binary
         condition = Condition.from_binary(buffer_)
         assert condition.serialize_uri() == basic_preimage.condition_uri
@@ -720,10 +761,10 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_preimage.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_preimage.condition_binary)
+        assert generated_condition_binary == basic_preimage.condition_binary
 
     def test_fulfillment_parsing(self, basic_preimage):
         """
@@ -734,6 +775,7 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_preimage.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_preimage.fulfillment
@@ -747,6 +789,7 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_preimage.fulfillment)
         assert fulfillment.validate(basic_preimage.message)
 
@@ -759,6 +802,7 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_preimage.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_preimage.fingerprint_contents
@@ -773,6 +817,7 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_preimage.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -787,13 +832,13 @@ class TestBasicPreimage:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_preimage.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_preimage.fulfillment
 
 
 class TestBasicPrefix:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_prefix):
         """
 
@@ -803,6 +848,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(basic_prefix.condition_binary)
         assert condition.serialize_uri() == basic_prefix.condition_uri
 
@@ -815,6 +861,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_prefix.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == basic_prefix.condition_binary
@@ -828,6 +875,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_prefix.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_prefix.fulfillment
@@ -841,6 +889,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_prefix.fulfillment)
         assert fulfillment.validate(basic_prefix.message)
 
@@ -853,6 +902,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_prefix.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_prefix.fingerprint_contents
@@ -867,6 +917,7 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_prefix.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -881,15 +932,14 @@ class TestBasicPrefix:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_prefix.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_prefix.fulfillment
 
 
 class TestBasicPrefixTwoLevelsDeep:
-
-    def test_condition_from_binary_to_serialize_uri(
-                                        self, basic_prefix_two_levels_deep):
+    def test_condition_from_binary_to_serialize_uri(self, basic_prefix_two_levels_deep):
         """
 
         1. Parse condition_binary.
@@ -898,13 +948,11 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Condition
-        condition = Condition.from_binary(
-            basic_prefix_two_levels_deep.condition_binary)
-        assert (condition.serialize_uri() ==
-                basic_prefix_two_levels_deep.condition_uri)
 
-    def test_condition_from_uri_to_serialize_binary(
-                                        self, basic_prefix_two_levels_deep):
+        condition = Condition.from_binary(basic_prefix_two_levels_deep.condition_binary)
+        assert condition.serialize_uri() == basic_prefix_two_levels_deep.condition_uri
+
+    def test_condition_from_uri_to_serialize_binary(self, basic_prefix_two_levels_deep):
         """
 
         1. Parse condition_uri.
@@ -913,11 +961,12 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Condition
-        condition = Condition.from_uri(
-            basic_prefix_two_levels_deep.condition_uri)
+
+        condition = Condition.from_uri(basic_prefix_two_levels_deep.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_prefix_two_levels_deep.condition_binary)
+        assert (
+            generated_condition_binary == basic_prefix_two_levels_deep.condition_binary
+        )
 
     def test_fulfillment_parsing(self, basic_prefix_two_levels_deep):
         """
@@ -928,8 +977,8 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_prefix_two_levels_deep.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_prefix_two_levels_deep.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_prefix_two_levels_deep.fulfillment
 
@@ -942,12 +991,11 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_prefix_two_levels_deep.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_prefix_two_levels_deep.fulfillment)
         assert fulfillment.validate(basic_prefix_two_levels_deep.message)
 
-    def test_fulfillment_fingerprint_generation(self,
-                                                basic_prefix_two_levels_deep):
+    def test_fulfillment_fingerprint_generation(self, basic_prefix_two_levels_deep):
         """
 
         1. Parse fulfillment.
@@ -956,14 +1004,12 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_prefix_two_levels_deep.fulfillment)
-        fingerprint_contents = fulfillment.fingerprint_contents
-        assert (fingerprint_contents ==
-                basic_prefix_two_levels_deep.fingerprint_contents)
 
-    def test_fulfillment_condition_generation(self,
-                                              basic_prefix_two_levels_deep):
+        fulfillment = Fulfillment.from_uri(basic_prefix_two_levels_deep.fulfillment)
+        fingerprint_contents = fulfillment.fingerprint_contents
+        assert fingerprint_contents == basic_prefix_two_levels_deep.fingerprint_contents
+
+    def test_fulfillment_condition_generation(self, basic_prefix_two_levels_deep):
         """
 
         1. Parse fulfillment.
@@ -973,8 +1019,8 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_prefix_two_levels_deep.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_prefix_two_levels_deep.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
         assert condition_uri == basic_prefix_two_levels_deep.condition_uri
@@ -988,13 +1034,13 @@ class TestBasicPrefixTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_prefix_two_levels_deep.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_prefix_two_levels_deep.fulfillment
 
 
 class TestBasicThreshold:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_threshold):
         """
 
@@ -1004,6 +1050,7 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(basic_threshold.condition_binary)
         assert condition.serialize_uri() == basic_threshold.condition_uri
 
@@ -1016,10 +1063,10 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_threshold.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_threshold.condition_binary)
+        assert generated_condition_binary == basic_threshold.condition_binary
 
     def test_fulfillment_parsing(self, basic_threshold):
         """
@@ -1030,6 +1077,7 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_threshold.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_threshold.fulfillment
@@ -1043,6 +1091,7 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_threshold.fulfillment)
         assert fulfillment.validate(basic_threshold.message)
 
@@ -1055,6 +1104,7 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_threshold.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_threshold.fingerprint_contents
@@ -1069,6 +1119,7 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_threshold.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -1083,15 +1134,16 @@ class TestBasicThreshold:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_threshold.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_threshold.fulfillment
 
 
 class TestBasicThresholdSameConditionTwice:
-
     def test_condition_from_binary_to_serialize_uri(
-                                self, basic_threshold_same_condition_twice):
+        self, basic_threshold_same_condition_twice
+    ):
         """
 
         1. Parse condition_binary.
@@ -1100,13 +1152,18 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(
-            basic_threshold_same_condition_twice.condition_binary)
-        assert (condition.serialize_uri() ==
-                basic_threshold_same_condition_twice.condition_uri)
+            basic_threshold_same_condition_twice.condition_binary
+        )
+        assert (
+            condition.serialize_uri()
+            == basic_threshold_same_condition_twice.condition_uri
+        )
 
     def test_condition_from_uri_to_serialize_binary(
-                                self, basic_threshold_same_condition_twice):
+        self, basic_threshold_same_condition_twice
+    ):
         """
 
         1. Parse condition_uri.
@@ -1115,11 +1172,15 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(
-            basic_threshold_same_condition_twice.condition_uri)
+            basic_threshold_same_condition_twice.condition_uri
+        )
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_threshold_same_condition_twice.condition_binary)
+        assert (
+            generated_condition_binary
+            == basic_threshold_same_condition_twice.condition_binary
+        )
 
     def test_fulfillment_parsing(self, basic_threshold_same_condition_twice):
         """
@@ -1130,14 +1191,14 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_condition_twice.fulfillment)
-        fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                basic_threshold_same_condition_twice.fulfillment)
 
-    def test_fulfillment_validation(self,
-                                    basic_threshold_same_condition_twice):
+        fulfillment = Fulfillment.from_uri(
+            basic_threshold_same_condition_twice.fulfillment
+        )
+        fulfillment_uri = fulfillment.serialize_uri()
+        assert fulfillment_uri == basic_threshold_same_condition_twice.fulfillment
+
+    def test_fulfillment_validation(self, basic_threshold_same_condition_twice):
         """
 
         1. Parse fulfillment.
@@ -1146,13 +1207,15 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-                basic_threshold_same_condition_twice.fulfillment)
-        assert fulfillment.validate(
-            basic_threshold_same_condition_twice.message)
+            basic_threshold_same_condition_twice.fulfillment
+        )
+        assert fulfillment.validate(basic_threshold_same_condition_twice.message)
 
     def test_fulfillment_fingerprint_generation(
-                                self, basic_threshold_same_condition_twice):
+        self, basic_threshold_same_condition_twice
+    ):
         """
 
         1. Parse fulfillment.
@@ -1161,14 +1224,19 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_condition_twice.fulfillment)
+            basic_threshold_same_condition_twice.fulfillment
+        )
         fingerprint_contents = fulfillment.fingerprint_contents
-        assert (fingerprint_contents ==
-                basic_threshold_same_condition_twice.fingerprint_contents)
+        assert (
+            fingerprint_contents
+            == basic_threshold_same_condition_twice.fingerprint_contents
+        )
 
     def test_fulfillment_condition_generation(
-                                self, basic_threshold_same_condition_twice):
+        self, basic_threshold_same_condition_twice
+    ):
         """
 
         1. Parse fulfillment.
@@ -1178,15 +1246,15 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_condition_twice.fulfillment)
+            basic_threshold_same_condition_twice.fulfillment
+        )
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
-        assert (condition_uri ==
-                basic_threshold_same_condition_twice.condition_uri)
+        assert condition_uri == basic_threshold_same_condition_twice.condition_uri
 
-    def test_fulfillment_parsing_from_json(
-                                self, basic_threshold_same_condition_twice):
+    def test_fulfillment_parsing_from_json(self, basic_threshold_same_condition_twice):
         """
 
         1. Create fulfillment from json.
@@ -1195,17 +1263,16 @@ class TestBasicThresholdSameConditionTwice:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_json(
-            basic_threshold_same_condition_twice.json)
+
+        fulfillment = Fulfillment.from_json(basic_threshold_same_condition_twice.json)
         fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                basic_threshold_same_condition_twice.fulfillment)
+        assert fulfillment_uri == basic_threshold_same_condition_twice.fulfillment
 
 
 class TestBasicThresholdSameFulfillmentTwice:
-
     def test_condition_from_binary_to_serialize_uri(
-                                self, basic_threshold_same_fulfillment_twice):
+        self, basic_threshold_same_fulfillment_twice
+    ):
         """
 
         1. Parse condition_binary.
@@ -1214,13 +1281,18 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(
-            basic_threshold_same_fulfillment_twice.condition_binary)
-        assert (condition.serialize_uri() ==
-                basic_threshold_same_fulfillment_twice.condition_uri)
+            basic_threshold_same_fulfillment_twice.condition_binary
+        )
+        assert (
+            condition.serialize_uri()
+            == basic_threshold_same_fulfillment_twice.condition_uri
+        )
 
     def test_condition_from_uri_to_serialize_binary(
-                                self, basic_threshold_same_fulfillment_twice):
+        self, basic_threshold_same_fulfillment_twice
+    ):
         """
 
         1. Parse condition_uri.
@@ -1229,11 +1301,15 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(
-            basic_threshold_same_fulfillment_twice.condition_uri)
+            basic_threshold_same_fulfillment_twice.condition_uri
+        )
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_threshold_same_fulfillment_twice.condition_binary)
+        assert (
+            generated_condition_binary
+            == basic_threshold_same_fulfillment_twice.condition_binary
+        )
 
     def test_fulfillment_parsing(self, basic_threshold_same_fulfillment_twice):
         """
@@ -1244,14 +1320,14 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_fulfillment_twice.fulfillment)
-        fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                basic_threshold_same_fulfillment_twice.fulfillment)
 
-    def test_fulfillment_validation(self,
-                                    basic_threshold_same_fulfillment_twice):
+        fulfillment = Fulfillment.from_uri(
+            basic_threshold_same_fulfillment_twice.fulfillment
+        )
+        fulfillment_uri = fulfillment.serialize_uri()
+        assert fulfillment_uri == basic_threshold_same_fulfillment_twice.fulfillment
+
+    def test_fulfillment_validation(self, basic_threshold_same_fulfillment_twice):
         """
 
         1. Parse fulfillment.
@@ -1260,13 +1336,15 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_fulfillment_twice.fulfillment)
-        assert fulfillment.validate(
-            basic_threshold_same_fulfillment_twice.message)
+            basic_threshold_same_fulfillment_twice.fulfillment
+        )
+        assert fulfillment.validate(basic_threshold_same_fulfillment_twice.message)
 
     def test_fulfillment_fingerprint_generation(
-                                self, basic_threshold_same_fulfillment_twice):
+        self, basic_threshold_same_fulfillment_twice
+    ):
         """
 
         1. Parse fulfillment.
@@ -1275,14 +1353,19 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_fulfillment_twice.fulfillment)
+            basic_threshold_same_fulfillment_twice.fulfillment
+        )
         fingerprint_contents = fulfillment.fingerprint_contents
-        assert (fingerprint_contents ==
-                basic_threshold_same_fulfillment_twice.fingerprint_contents)
+        assert (
+            fingerprint_contents
+            == basic_threshold_same_fulfillment_twice.fingerprint_contents
+        )
 
     def test_fulfillment_condition_generation(
-                                self, basic_threshold_same_fulfillment_twice):
+        self, basic_threshold_same_fulfillment_twice
+    ):
         """
 
         1. Parse fulfillment.
@@ -1292,15 +1375,17 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            basic_threshold_same_fulfillment_twice.fulfillment)
+            basic_threshold_same_fulfillment_twice.fulfillment
+        )
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
-        assert (condition_uri ==
-                basic_threshold_same_fulfillment_twice.condition_uri)
+        assert condition_uri == basic_threshold_same_fulfillment_twice.condition_uri
 
     def test_fulfillment_parsing_from_json(
-                                self, basic_threshold_same_fulfillment_twice):
+        self, basic_threshold_same_fulfillment_twice
+    ):
         """
 
         1. Create fulfillment from json.
@@ -1309,17 +1394,16 @@ class TestBasicThresholdSameFulfillmentTwice:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_json(
-            basic_threshold_same_fulfillment_twice.json)
+
+        fulfillment = Fulfillment.from_json(basic_threshold_same_fulfillment_twice.json)
         fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                basic_threshold_same_fulfillment_twice.fulfillment)
+        assert fulfillment_uri == basic_threshold_same_fulfillment_twice.fulfillment
 
 
 class TestBasicThresholdTwoLevelsDeep:
-
     def test_condition_from_binary_to_serialize_uri(
-                                self, basic_threshold_two_levels_deep):
+        self, basic_threshold_two_levels_deep
+    ):
         """
 
         1. Parse condition_binary.
@@ -1328,13 +1412,17 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(
-            basic_threshold_two_levels_deep.condition_binary)
-        assert (condition.serialize_uri() ==
-                basic_threshold_two_levels_deep.condition_uri)
+            basic_threshold_two_levels_deep.condition_binary
+        )
+        assert (
+            condition.serialize_uri() == basic_threshold_two_levels_deep.condition_uri
+        )
 
     def test_condition_from_uri_to_serialize_binary(
-                                self, basic_threshold_two_levels_deep):
+        self, basic_threshold_two_levels_deep
+    ):
         """
 
         1. Parse condition_uri.
@@ -1343,11 +1431,13 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Condition
-        condition = Condition.from_uri(
-            basic_threshold_two_levels_deep.condition_uri)
+
+        condition = Condition.from_uri(basic_threshold_two_levels_deep.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_threshold_two_levels_deep.condition_binary)
+        assert (
+            generated_condition_binary
+            == basic_threshold_two_levels_deep.condition_binary
+        )
 
     def test_fulfillment_parsing(self, basic_threshold_two_levels_deep):
         """
@@ -1358,14 +1448,12 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_two_levels_deep.fulfillment)
-        fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                basic_threshold_two_levels_deep.fulfillment)
 
-    def test_fulfillment_validation(self,
-                                    basic_threshold_two_levels_deep):
+        fulfillment = Fulfillment.from_uri(basic_threshold_two_levels_deep.fulfillment)
+        fulfillment_uri = fulfillment.serialize_uri()
+        assert fulfillment_uri == basic_threshold_two_levels_deep.fulfillment
+
+    def test_fulfillment_validation(self, basic_threshold_two_levels_deep):
         """
 
         1. Parse fulfillment.
@@ -1374,12 +1462,11 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_two_levels_deep.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_threshold_two_levels_deep.fulfillment)
         assert fulfillment.validate(basic_threshold_two_levels_deep.message)
 
-    def test_fulfillment_fingerprint_generation(
-                                self, basic_threshold_two_levels_deep):
+    def test_fulfillment_fingerprint_generation(self, basic_threshold_two_levels_deep):
         """
 
         1. Parse fulfillment.
@@ -1388,14 +1475,14 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_two_levels_deep.fulfillment)
-        fingerprint_contents = fulfillment.fingerprint_contents
-        assert (fingerprint_contents ==
-                basic_threshold_two_levels_deep.fingerprint_contents)
 
-    def test_fulfillment_condition_generation(
-                                self, basic_threshold_two_levels_deep):
+        fulfillment = Fulfillment.from_uri(basic_threshold_two_levels_deep.fulfillment)
+        fingerprint_contents = fulfillment.fingerprint_contents
+        assert (
+            fingerprint_contents == basic_threshold_two_levels_deep.fingerprint_contents
+        )
+
+    def test_fulfillment_condition_generation(self, basic_threshold_two_levels_deep):
         """
 
         1. Parse fulfillment.
@@ -1405,14 +1492,13 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_two_levels_deep.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_threshold_two_levels_deep.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
         assert condition_uri == basic_threshold_two_levels_deep.condition_uri
 
-    def test_fulfillment_parsing_from_json(
-                                self, basic_threshold_two_levels_deep):
+    def test_fulfillment_parsing_from_json(self, basic_threshold_two_levels_deep):
         """
 
         1. Create fulfillment from json.
@@ -1421,16 +1507,14 @@ class TestBasicThresholdTwoLevelsDeep:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_json(
-            basic_threshold_two_levels_deep.json)
+
+        fulfillment = Fulfillment.from_json(basic_threshold_two_levels_deep.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_threshold_two_levels_deep.fulfillment
 
 
 class TestBasicThresholdSchroedinger:
-
-    def test_condition_from_binary_to_serialize_uri(
-                                        self, basic_threshold_schroedinger):
+    def test_condition_from_binary_to_serialize_uri(self, basic_threshold_schroedinger):
         """
 
         1. Parse condition_binary.
@@ -1439,13 +1523,11 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Condition
-        condition = Condition.from_binary(
-            basic_threshold_schroedinger.condition_binary)
-        assert (condition.serialize_uri() ==
-                basic_threshold_schroedinger.condition_uri)
 
-    def test_condition_from_uri_to_serialize_binary(
-                                        self, basic_threshold_schroedinger):
+        condition = Condition.from_binary(basic_threshold_schroedinger.condition_binary)
+        assert condition.serialize_uri() == basic_threshold_schroedinger.condition_uri
+
+    def test_condition_from_uri_to_serialize_binary(self, basic_threshold_schroedinger):
         """
 
         1. Parse condition_uri.
@@ -1454,11 +1536,12 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Condition
-        condition = Condition.from_uri(
-            basic_threshold_schroedinger.condition_uri)
+
+        condition = Condition.from_uri(basic_threshold_schroedinger.condition_uri)
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                basic_threshold_schroedinger.condition_binary)
+        assert (
+            generated_condition_binary == basic_threshold_schroedinger.condition_binary
+        )
 
     def test_fulfillment_parsing(self, basic_threshold_schroedinger):
         """
@@ -1469,8 +1552,8 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_schroedinger.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_threshold_schroedinger.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_threshold_schroedinger.fulfillment
 
@@ -1483,12 +1566,11 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_schroedinger.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_threshold_schroedinger.fulfillment)
         assert fulfillment.validate(basic_threshold_schroedinger.message)
 
-    def test_fulfillment_fingerprint_generation(self,
-                                                basic_threshold_schroedinger):
+    def test_fulfillment_fingerprint_generation(self, basic_threshold_schroedinger):
         """
 
         1. Parse fulfillment.
@@ -1497,14 +1579,12 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_schroedinger.fulfillment)
-        fingerprint_contents = fulfillment.fingerprint_contents
-        assert (fingerprint_contents ==
-                basic_threshold_schroedinger.fingerprint_contents)
 
-    def test_fulfillment_condition_generation(self,
-                                              basic_threshold_schroedinger):
+        fulfillment = Fulfillment.from_uri(basic_threshold_schroedinger.fulfillment)
+        fingerprint_contents = fulfillment.fingerprint_contents
+        assert fingerprint_contents == basic_threshold_schroedinger.fingerprint_contents
+
+    def test_fulfillment_condition_generation(self, basic_threshold_schroedinger):
         """
 
         1. Parse fulfillment.
@@ -1514,8 +1594,8 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            basic_threshold_schroedinger.fulfillment)
+
+        fulfillment = Fulfillment.from_uri(basic_threshold_schroedinger.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
         assert condition_uri == basic_threshold_schroedinger.condition_uri
@@ -1529,13 +1609,13 @@ class TestBasicThresholdSchroedinger:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_threshold_schroedinger.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_threshold_schroedinger.fulfillment
 
 
 class TestBasicRsa:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_rsa):
         """
 
@@ -1545,6 +1625,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Condition
+
         buffer_ = basic_rsa.condition_binary
         condition = Condition.from_binary(buffer_)
         assert condition.serialize_uri() == basic_rsa.condition_uri
@@ -1558,6 +1639,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_rsa.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == basic_rsa.condition_binary
@@ -1571,6 +1653,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_rsa.fulfillment
@@ -1584,6 +1667,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa.fulfillment)
         assert fulfillment.validate(basic_rsa.message)
 
@@ -1596,6 +1680,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_rsa.fingerprint_contents
@@ -1610,6 +1695,7 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -1624,13 +1710,13 @@ class TestBasicRsa:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_rsa.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_rsa.fulfillment
 
 
 class TestBasicRsa4096:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_rsa4096):
         """
 
@@ -1640,6 +1726,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(basic_rsa4096.condition_binary)
         assert condition.serialize_uri() == basic_rsa4096.condition_uri
 
@@ -1652,6 +1739,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_rsa4096.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == basic_rsa4096.condition_binary
@@ -1665,6 +1753,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa4096.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_rsa4096.fulfillment
@@ -1678,6 +1767,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa4096.fulfillment)
         assert fulfillment.validate(basic_rsa4096.message)
 
@@ -1690,6 +1780,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa4096.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_rsa4096.fingerprint_contents
@@ -1704,6 +1795,7 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_rsa4096.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -1718,13 +1810,13 @@ class TestBasicRsa4096:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_rsa4096.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_rsa4096.fulfillment
 
 
 class TestBasicEd25519:
-
     def test_condition_from_binary_to_serialize_uri(self, basic_ed25519):
         """
 
@@ -1734,6 +1826,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(basic_ed25519.condition_binary)
         assert condition.serialize_uri() == basic_ed25519.condition_uri
 
@@ -1746,6 +1839,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(basic_ed25519.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == basic_ed25519.condition_binary
@@ -1759,6 +1853,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_ed25519.fulfillment)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_ed25519.fulfillment
@@ -1772,6 +1867,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_ed25519.fulfillment)
         assert fulfillment.validate(message=basic_ed25519.message)
 
@@ -1784,6 +1880,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_ed25519.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == basic_ed25519.fingerprint_contents
@@ -1798,6 +1895,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(basic_ed25519.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -1812,6 +1910,7 @@ class TestBasicEd25519:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(basic_ed25519.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == basic_ed25519.fulfillment
@@ -1828,9 +1927,10 @@ class TestBasicEd25519:
         """
         from cryptoconditions.types.ed25519 import Ed25519Sha256
         from cryptoconditions.crypto import base64_add_padding
+
         fulfillment = Ed25519Sha256(
             public_key=urlsafe_b64decode(
-                base64_add_padding(basic_ed25519.json['publicKey'])
+                base64_add_padding(basic_ed25519.json["publicKey"])
             )
         )
         signature = fulfillment.sign(
@@ -1838,7 +1938,8 @@ class TestBasicEd25519:
             private_key=basic_ed25519.private_key,
         )
         assert signature == urlsafe_b64decode(
-            base64_add_padding(basic_ed25519.json['signature']))
+            base64_add_padding(basic_ed25519.json["signature"])
+        )
 
 
 ###############################################################################
@@ -1847,9 +1948,7 @@ class TestBasicEd25519:
 #                                                                             #
 ###############################################################################
 class TestNotarizedReceipt:
-
-    def test_condition_from_binary_to_serialize_uri(
-                                            self, notarized_receipt):
+    def test_condition_from_binary_to_serialize_uri(self, notarized_receipt):
         """
 
         1. Parse condition_binary.
@@ -1858,11 +1957,11 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(notarized_receipt.condition_binary)
         assert condition.serialize_uri() == notarized_receipt.condition_uri
 
-    def test_condition_from_uri_to_serialize_binary(
-                                            self, notarized_receipt):
+    def test_condition_from_uri_to_serialize_binary(self, notarized_receipt):
         """
 
         1. Parse condition_uri.
@@ -1871,6 +1970,7 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(notarized_receipt.condition_uri)
         generated_condition_binary = condition.serialize_binary()
         assert generated_condition_binary == notarized_receipt.condition_binary
@@ -1898,6 +1998,7 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(notarized_receipt.fulfillment)
         assert fulfillment.validate(notarized_receipt.message)
 
@@ -1910,6 +2011,7 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(notarized_receipt.fulfillment)
         fingerprint_contents = fulfillment.fingerprint_contents
         assert fingerprint_contents == notarized_receipt.fingerprint_contents
@@ -1924,6 +2026,7 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(notarized_receipt.fulfillment)
         condition = fulfillment.condition
         condition_uri = condition.serialize_uri()
@@ -1938,15 +2041,16 @@ class TestNotarizedReceipt:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_json(notarized_receipt.json)
         fulfillment_uri = fulfillment.serialize_uri()
         assert fulfillment_uri == notarized_receipt.fulfillment
 
 
 class TestNotarizedReceiptMultipleNotaries:
-
     def test_condition_from_binary_to_serialize_uri(
-                                    self, notarized_receipt_multiple_notaries):
+        self, notarized_receipt_multiple_notaries
+    ):
         """
 
         1. Parse condition_binary.
@@ -1955,13 +2059,18 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_binary(
-            notarized_receipt_multiple_notaries.condition_binary)
-        assert (condition.serialize_uri() ==
-                notarized_receipt_multiple_notaries.condition_uri)
+            notarized_receipt_multiple_notaries.condition_binary
+        )
+        assert (
+            condition.serialize_uri()
+            == notarized_receipt_multiple_notaries.condition_uri
+        )
 
     def test_condition_from_uri_to_serialize_binary(
-                                    self, notarized_receipt_multiple_notaries):
+        self, notarized_receipt_multiple_notaries
+    ):
         """
 
         1. Parse condition_uri.
@@ -1970,11 +2079,15 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Condition
+
         condition = Condition.from_uri(
-            notarized_receipt_multiple_notaries.condition_uri)
+            notarized_receipt_multiple_notaries.condition_uri
+        )
         generated_condition_binary = condition.serialize_binary()
-        assert (generated_condition_binary ==
-                notarized_receipt_multiple_notaries.condition_binary)
+        assert (
+            generated_condition_binary
+            == notarized_receipt_multiple_notaries.condition_binary
+        )
 
     def test_fulfillment_parsing(self, notarized_receipt_multiple_notaries):
         """
@@ -1985,11 +2098,12 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            notarized_receipt_multiple_notaries.fulfillment)
+            notarized_receipt_multiple_notaries.fulfillment
+        )
         fulfillment_uri = fulfillment.serialize_uri()
-        assert (fulfillment_uri ==
-                notarized_receipt_multiple_notaries.fulfillment)
+        assert fulfillment_uri == notarized_receipt_multiple_notaries.fulfillment
 
     def test_fulfillment_validation(self, notarized_receipt_multiple_notaries):
         """
@@ -2000,13 +2114,15 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            notarized_receipt_multiple_notaries.fulfillment)
-        assert fulfillment.validate(
-            notarized_receipt_multiple_notaries.message)
+            notarized_receipt_multiple_notaries.fulfillment
+        )
+        assert fulfillment.validate(notarized_receipt_multiple_notaries.message)
 
     def test_fulfillment_fingerprint_generation(
-                                    self, notarized_receipt_multiple_notaries):
+        self, notarized_receipt_multiple_notaries
+    ):
         """
 
         1. Parse fulfillment.
@@ -2015,13 +2131,18 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Fulfillment
+
         fulfillment = Fulfillment.from_uri(
-            notarized_receipt_multiple_notaries.fulfillment)
-        assert (fulfillment.fingerprint_contents ==
-                notarized_receipt_multiple_notaries.fingerprint_contents)
+            notarized_receipt_multiple_notaries.fulfillment
+        )
+        assert (
+            fulfillment.fingerprint_contents
+            == notarized_receipt_multiple_notaries.fingerprint_contents
+        )
 
     def test_fulfillment_condition_generation(
-                                    self, notarized_receipt_multiple_notaries):
+        self, notarized_receipt_multiple_notaries
+    ):
         """
 
         1. Parse fulfillment.
@@ -2031,14 +2152,17 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_uri(
-            notarized_receipt_multiple_notaries.fulfillment)
-        condition = fulfillment.condition
-        assert (condition.serialize_uri() ==
-                notarized_receipt_multiple_notaries.condition_uri)
 
-    def test_fulfillment_parsing_from_json(
-                                    self, notarized_receipt_multiple_notaries):
+        fulfillment = Fulfillment.from_uri(
+            notarized_receipt_multiple_notaries.fulfillment
+        )
+        condition = fulfillment.condition
+        assert (
+            condition.serialize_uri()
+            == notarized_receipt_multiple_notaries.condition_uri
+        )
+
+    def test_fulfillment_parsing_from_json(self, notarized_receipt_multiple_notaries):
         """
 
         1. Create fulfillment from json.
@@ -2047,7 +2171,9 @@ class TestNotarizedReceiptMultipleNotaries:
 
         """
         from cryptoconditions import Fulfillment
-        fulfillment = Fulfillment.from_json(
-            notarized_receipt_multiple_notaries.json)
-        assert (fulfillment.serialize_uri() ==
-                notarized_receipt_multiple_notaries.fulfillment)
+
+        fulfillment = Fulfillment.from_json(notarized_receipt_multiple_notaries.json)
+        assert (
+            fulfillment.serialize_uri()
+            == notarized_receipt_multiple_notaries.fulfillment
+        )
