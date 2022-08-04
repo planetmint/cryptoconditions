@@ -13,31 +13,33 @@ from cryptoconditions.crypto import base64_add_padding, base64_remove_padding
 from cryptoconditions.types.base_sha256 import BaseSha256
 from cryptoconditions.schemas.fingerprint import ZenroomFingerprintContents
 from capturer import CaptureOutput
+
 # from cryptoconditions.zencode import read_zencode
 # from zenroom_minimal import Zenroom
+
 
 def _execute(result, *args, **kwargs):
     z = zencode_exec(*args, **kwargs)
     result.put(z)
 
+
 class ZenroomException(Exception):
     pass
 
+
 class MalformedMessageException(Exception):
     def __init__(self, *args, **kwargs):
-        return super().__init__(
-            "The message has to include the"
-            " result of the zenroom execution", *args, **kwargs)
+        return super().__init__("The message has to include the" " result of the zenroom execution", *args, **kwargs)
 
 
 class ZenroomSha256(BaseSha256):
 
     TYPE_ID = 5
-    TYPE_NAME = 'zenroom-sha-256'
-    TYPE_ASN1 = 'zenroomSha256'
-    TYPE_ASN1_CONDITION = 'zenroomSha256Condition'
-    TYPE_ASN1_FULFILLMENT = 'zenroomSha256Fulfillment'
-    TYPE_CATEGORY = 'simple'
+    TYPE_NAME = "zenroom-sha-256"
+    TYPE_ASN1 = "zenroomSha256"
+    TYPE_ASN1_CONDITION = "zenroomSha256Condition"
+    TYPE_ASN1_FULFILLMENT = "zenroomSha256Fulfillment"
+    TYPE_CATEGORY = "simple"
 
     CONSTANT_COST = 131072
     PUBLIC_KEY_LENGTH = 32
@@ -75,7 +77,7 @@ class ZenroomSha256(BaseSha256):
         # is to execute it, but I cannot because I don't have the data in the
         # asset and in the metadata
         if not isinstance(script, str):
-            raise TypeError('the script must be a string')
+            raise TypeError("the script must be a string")
         return script
 
     @property
@@ -89,23 +91,23 @@ class ZenroomSha256(BaseSha256):
 
     # All string must be ascii
     def _validate_keys(self, keys):
-        if isinstance(keys,bytes):
+        if isinstance(keys, bytes):
             keys = json.loads(keys.decode())
         if not isinstance(keys, dict):
-            raise TypeError('the keys must be a dictionary')
+            raise TypeError("the keys must be a dictionary")
         for name in keys.keys():
             if not isinstance(name, str):
-                raise TypeError('{} is not the name of a user', name)
+                raise TypeError("{} is not the name of a user", name)
             for k in keys[name].keys():
                 if not isinstance(k, str):
-                    raise TypeError('key type must be a string', name)
+                    raise TypeError("key type must be a string", name)
                 if not isinstance(keys[name][k], str):
-                    raise TypeError('the output of zencode keys must be a string', name)
+                    raise TypeError("the output of zencode keys must be a string", name)
         return keys
 
     @property
     def keys(self):
-        return self._keys or b''
+        return self._keys or b""
 
     @keys.setter
     def keys(self, keys):
@@ -115,14 +117,14 @@ class ZenroomSha256(BaseSha256):
     def _validate_data(self, data):
         # Any dictionary (that can be serialized in json) could be valid data
         if not isinstance(data, dict):
-            raise TypeError('the keys must be a dictionary')
+            raise TypeError("the keys must be a dictionary")
         # If data is not serializable this will throw an exception
         json.dumps(data)
         return data
 
     @property
     def data(self):
-        return self._data or b''
+        return self._data or b""
 
     @data.setter
     def data(self, data):
@@ -134,24 +136,22 @@ class ZenroomSha256(BaseSha256):
         return json.dumps(
             self._keys,
             sort_keys=True,
-            separators=(',', ':'),
+            separators=(",", ":"),
             ensure_ascii=False,
         )
 
     @property
     def asn1_dict_payload(self):
         return {
-            'script': self._script,
-            'data': json.dumps(self._data),
-            'keys': json.dumps(self._keys),
+            "script": self._script,
+            "data": json.dumps(self._data),
+            "keys": json.dumps(self._keys),
         }
 
     @property
     def fingerprint_contents(self):
         asn1_fingerprint_obj = nat_decode(
-            {'script': self._script,
-             'data': json.dumps(self._data),
-             'keys': json.dumps(self._keys)},
+            {"script": self._script, "data": json.dumps(self._data), "keys": json.dumps(self._keys)},
             asn1Spec=ZenroomFingerprintContents(),
         )
         return der_encode(asn1_fingerprint_obj)
@@ -173,10 +173,10 @@ class ZenroomSha256(BaseSha256):
             dict: representing the fulfillment
         """
         return {
-            'type': ZenroomSha256.TYPE_NAME,
-            'script': base58.b58encode(json.dumps(self._script)),
-            'data': base58.b58encode(json.dumps(self._data)),
-            'keys': base58.b58encode(json.dumps(self._keys)),
+            "type": ZenroomSha256.TYPE_NAME,
+            "script": base58.b58encode(json.dumps(self._script)),
+            "data": base58.b58encode(json.dumps(self._data)),
+            "keys": base58.b58encode(json.dumps(self._keys)),
         }
 
     # Create a new process and run a zenroom instance in it
@@ -187,10 +187,14 @@ class ZenroomSha256(BaseSha256):
         m = Manager()
         q = m.Queue()
         with CaptureOutput() as capturer:
-            p = Process(target=_execute,
-                        args=(q, script,),
-                        kwargs={'keys': json.dumps(keys),
-                                'data': json.dumps(data)})
+            p = Process(
+                target=_execute,
+                args=(
+                    q,
+                    script,
+                ),
+                kwargs={"keys": json.dumps(keys), "data": json.dumps(data)},
+            )
             p.start()
             p.join()
 
@@ -213,16 +217,13 @@ class ZenroomSha256(BaseSha256):
     def sign(self, message, condition_script, private_keys):
         message = json.loads(message)
         data = {}
-        if 'data' in message['asset'].keys():
-            data['asset'] = message['asset']['data']
+        if "data" in message["asset"].keys():
+            data["asset"] = message["asset"]["data"]
         if self.data is not None:
-            data['output'] = self.data
+            data["output"] = self.data
 
-        result = ZenroomSha256.run_zenroom(condition_script,
-                                           {"keyring": private_keys},
-                                           data)
-        message['metadata'] = {'data': json.loads(result.output),
-                               'result': 'ok'}
+        result = ZenroomSha256.run_zenroom(condition_script, {"keyring": private_keys}, data)
+        message["metadata"] = {"data": json.loads(result.output), "result": "ok"}
 
         print(message)
         return json.dumps(message)
@@ -237,13 +238,10 @@ class ZenroomSha256(BaseSha256):
             dict: representing the fulfillment
         """
         return {
-            'type': ZenroomSha256.TYPE_NAME,
-            'script': base64_remove_padding(
-                urlsafe_b64encode(self._script)),
-            'data': base64_remove_padding(
-                urlsafe_b64encode(self._data)),
-            'keys': base64_remove_padding(
-                urlsafe_b64encode(self._keys)),
+            "type": ZenroomSha256.TYPE_NAME,
+            "script": base64_remove_padding(urlsafe_b64encode(self._script)),
+            "data": base64_remove_padding(urlsafe_b64encode(self._data)),
+            "keys": base64_remove_padding(urlsafe_b64encode(self._keys)),
             # 'conf': base64_remove_padding(
             #     urlsafe_b64encode(self.conf)),
         }
@@ -260,12 +258,12 @@ class ZenroomSha256(BaseSha256):
         Returns:
             Fulfillment
         """
-        if data.get('script'):
-            self._script = base58.b58decode(data['script'])
-        if data.get('data'):
-            self._data = base58.b58decode(data['data'])
-        if data.get('keys'):
-            self._keys = base58.b58decode(data['keys'])
+        if data.get("script"):
+            self._script = base58.b58decode(data["script"])
+        if data.get("data"):
+            self._data = base58.b58decode(data["data"])
+        if data.get("keys"):
+            self._keys = base58.b58decode(data["keys"])
 
     # TODO Adapt according to outcomes of
     # https://github.com/rfcs/crypto-conditions/issues/16
@@ -279,17 +277,14 @@ class ZenroomSha256(BaseSha256):
         Returns:
             Fulfillment
         """
-        self._script = urlsafe_b64decode(base64_add_padding(
-            data['script']))
-        self._data = urlsafe_b64decode(base64_add_padding(
-            data['data']))
-        self._keys = urlsafe_b64decode(base64_add_padding(
-            data['keys']))
+        self._script = urlsafe_b64decode(base64_add_padding(data["script"]))
+        self._data = urlsafe_b64decode(base64_add_padding(data["data"]))
+        self._keys = urlsafe_b64decode(base64_add_padding(data["keys"]))
 
     def parse_asn1_dict_payload(self, data):
-        self._script = data['script'].decode()
-        self._data = literal_eval(data['data'].decode('utf8'))
-        self._keys = literal_eval(data['keys'].decode('utf8'))
+        self._script = data["script"].decode()
+        self._data = literal_eval(data["data"].decode("utf8"))
+        self._keys = literal_eval(data["keys"].decode("utf8"))
 
     def validate(self, *, message):
         """
@@ -310,29 +305,27 @@ class ZenroomSha256(BaseSha256):
             return False
         data = {}
         try:
-            if message['asset']['data']:
-                data['asset'] = message['asset']['data']
+            if message["asset"]["data"]:
+                data["asset"] = message["asset"]["data"]
         except JSONDecodeError:
             pass
         if self._data is not None:
-            data['output'] = self._data
+            data["output"] = self._data
 
         # There could also be some data in the metadata,
         # this is an output of the condition script which
         # become an input for the fulfillment script
         try:
-            if message['metadata'] and message['metadata']['data']:
-                data['result'] = message['metadata']['data']
+            if message["metadata"] and message["metadata"]["data"]:
+                data["result"] = message["metadata"]["data"]
         except ValueError:
             pass
         # We can put pulic keys either in the keys or the data of zenroom
         data.update(self.keys)
 
-        result = ZenroomSha256.run_zenroom(self.script,
-                                           {},
-                                           data)
+        result = ZenroomSha256.run_zenroom(self.script, {}, data)
         try:
-            message['metadata']['result']
+            message["metadata"]["result"]
         except ValueError:
             raise MalformedMessageException()
 
@@ -342,6 +335,6 @@ class ZenroomSha256(BaseSha256):
             # dictionary of array with the string 'ok'
             # this is stored in result and compared against the content of
             # the metadata
-            return result["output"][0] == message['metadata']['result']
+            return result["output"][0] == message["metadata"]["result"]
         except JSONDecodeError:
             return False
