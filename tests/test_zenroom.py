@@ -100,53 +100,18 @@ def test_zenroom():
     metadata = {"result": {"output": ["ok"]}}
 
     fulfill_script = """
-        Scenario 'ecdh': Bob verifies the signature from Alice
-        Given I have a 'ecdh public key' from 'Alice'
-        Given that I have a 'string dictionary' named 'houses' inside 'asset'
-        Given I have a 'signature' named 'signature' inside 'metadata'
-        When I verify the 'houses' has a signature in 'signature' by 'Alice'
-        Then print the string 'ok'
+    Scenario 'ecdh': Bob verifies the signature from Alice
+    Given I have a 'ecdh public key' from 'Alice'
+    Given that I have a 'string dictionary' named 'houses' inside 'asset'
+    Given I have a 'signature' named 'signature' inside 'metadata'
+    When I verify the 'houses' has a signature in 'signature' by 'Alice'
+    Then print the string 'ok'
     """
     # CRYPTO-CONDITIONS: instantiate an Ed25519 crypto-condition for buyer
     zenSha = ZenroomSha256(script=fulfill_script, keys=zen_public_keys, data=data)
 
     # CRYPTO-CONDITIONS: generate the condition uri
     condition_uri = zenSha.condition.serialize_uri()
-
-    # CRYPTO-CONDITIONS: construct an unsigned fulfillment dictionary
-    unsigned_fulfillment_dict = {
-        "type": zenSha.TYPE_NAME,
-        "script": fulfill_script,
-        "keys": zen_public_keys,
-    }
-
-    output = {
-        "amount": "1000",
-        "condition": {
-            "details": unsigned_fulfillment_dict,
-            "uri": condition_uri,
-        },
-        "data": data,
-        "script": fulfill_script,
-        "conf": "",
-        "public_keys": (zen_public_keys["Alice"]["ecdh_public_key"],),
-    }
-
-    input_ = {
-        "fulfillment": None,
-        "fulfills": None,
-        "owners_before": (zen_public_keys["Alice"]["ecdh_public_key"],),
-    }
-
-    token_creation_tx = {
-        "operation": "CREATE",
-        "asset": asset,
-        "metadata": None,
-        "outputs": (output,),
-        "inputs": (input_,),
-        "version": version,
-        "id": None,
-    }
 
     message = {"asset": asset, "metadata": metadata}
     message = json.dumps(
