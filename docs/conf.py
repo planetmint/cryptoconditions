@@ -1,4 +1,4 @@
-import sphinx_rtd_theme
+#import sphinx_rtd_theme
 import datetime
 
 _version = {}
@@ -22,6 +22,7 @@ autodoc_default_flags = [
     "show-inheritance",
 ]
 
+
 templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
@@ -31,19 +32,21 @@ copyright = str(now.year) + ", Cryptoconditions Contributors"
 author = "Cryptoconditions Contributors"
 version = _version["__short_version__"]
 release = _version["__version__"]
-language = None
+language = "en"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 pygments_style = "sphinx"
 todo_include_todos = True
-html_theme = "sphinx_rtd_theme"
+html_theme = "press"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 html_static_path = ["_static"]
-htmlhelp_basename = "cryptoconditionsdoc"
+htmlhelp_basename = "cryptoconditions"
+
+intersphinx_mapping = {
+    "planetmint": ("https://docs.planetmint.io/en/latest/", None),
+}
 
 latex_elements = {}
 
 latex_documents = [
     (master_doc, "cryptoconditions.tex", "cryptoconditions Documentation", "Cryptoconditions Contributors", "manual"),
 ]
-
-intersphinx_mapping = {"https://docs.python.org/3/": None}

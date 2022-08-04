@@ -34,7 +34,15 @@ docs_require = [
     "recommonmark>=0.4.0",
     "Sphinx>=1.3.5",
     "sphinxcontrib-napoleon>=0.4.4",
-    "sphinx-rtd-theme>=0.1.9",
+    "sphinx-press-theme>=0.8.0",
+]
+
+install_requires=[
+    "zenroom==2.1.0.dev1655293214",
+    "base58==2.1.0",
+    "PyNaCl==1.4.0",
+    "pyasn1==0.4.8",
+    "cryptography==3.4.7",
 ]
 
 setup(
@@ -64,19 +72,11 @@ setup(
         "Operating System :: POSIX :: Linux",
     ],
     packages=find_packages(exclude=["tests*", "examples"]),
-    install_requires=[
-        "zenroom==2.1.0.dev1654703596",
-        "capturer==3.0",
-        "base58==2.1.0",
-        "PyNaCl==1.4.0",
-        "pyasn1==0.4.8",
-        "cryptography==3.4.7",
-    ],
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     extras_require={
-        "test": tests_require,
-        "dev": dev_require + tests_require + docs_require,
+        "test": install_requires + tests_require,
+        "dev": install_requires + dev_require + tests_require + docs_require,
         "docs": docs_require,
     },
 )
