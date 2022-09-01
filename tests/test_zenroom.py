@@ -70,21 +70,32 @@ def test_zenroom():
     print(alice)
     print("============== BOB KEYPAIR =================")
     print(bob)
-
-    asset = {
-        "data": {
-            "houses": [
-                {
-                    "name": "Harry",
-                    "team": "Gryffindor",
-                },
-                {
-                    "name": "Draco",
-                    "team": "Slytherin",
-                },
-            ],
-        }
+    script = {
+        "houses": [
+            {
+                "name": "Harry",
+                "team": "Gryffindor",
+            },
+            {
+                "name": "Draco",
+                "team": "Slytherin",
+            },
+        ],
     }
+    #    asset = {
+    #        "data": {
+    #            "houses": [
+    #                {
+    #                    "name": "Harry",
+    #                    "team": "Gryffindor",
+    #                },
+    #                {
+    #                    "name": "Draco",
+    #                    "team": "Slytherin",
+    #                },
+    #            ],
+    #        }
+    #    }
     zen_public_keys = sk2pk("Alice", alice)
     zen_public_keys.update(sk2pk("Bob", bob))
 
@@ -102,8 +113,8 @@ def test_zenroom():
     fulfill_script = """
     Scenario 'ecdh': Bob verifies the signature from Alice
     Given I have a 'ecdh public key' from 'Alice'
-    Given that I have a 'string dictionary' named 'houses' inside 'asset'
-    Given I have a 'signature' named 'signature' inside 'metadata'
+    Given that I have a 'string dictionary' named 'houses'
+    Given I have a 'signature' named 'signature'
     When I verify the 'houses' has a signature in 'signature' by 'Alice'
     Then print the string 'ok'
     """
@@ -112,19 +123,14 @@ def test_zenroom():
 
     # CRYPTO-CONDITIONS: generate the condition uri
     condition_uri = zenSha.condition.serialize_uri()
-
-    message = {"asset": asset, "metadata": metadata}
-    message = json.dumps(
-        message,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-    )
+    # message = {"asset": asset, "metadata": metadata}
+    message = script
+    message = json.dumps(message)
     print("====== GENERATE RESULT (METADATA) =======")
     condition_script = """
         Scenario 'ecdh': create the signature of an object
         Given I have the 'keyring'
-        Given that I have a 'string dictionary' named 'houses' inside 'asset'
+        Given that I have a 'string dictionary' named 'houses'
         When I create the signature of 'houses'
         Then print the 'signature'
         """
@@ -171,31 +177,27 @@ def test_wrong_data():
     )
 
 
+# @pytest.mark.skip # the zenroom script ist not executed
 def test_no_asset_no_metadata():
-    zenSha = ZenroomSha256(
-        script="Given nothing\nThen print the string 'Hello'",
-    )
-    metadata = {"result": {"output": ["Hello"]}}
-    message = {
-        "metadata": metadata,
-    }
+    script = """Given nothing
+    Then print the string 'Hello'"""
+    zenSha = ZenroomSha256(script=script)
+    message = {"output": ["Hello"]}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
 
 
 def test_use_asset_and_metadata():
-    script = """Given I have a 'string dictionary' named 'asset'
-        Given I have a 'string dictionary' named 'metadata'
-        Given I have a 'string' named 'word1' in 'asset'
-        Given I have a 'string' named 'word2' in 'metadata'
+    script = """Given I have a 'string' named 'word1'
+        Given I have a 'string' named 'word2'
         Given I have a 'string' named 'word3'
         When I append 'word2' to 'word1'
         When I append 'word3' to 'word1'
         Then print the 'word1'"""
-    zenSha = ZenroomSha256(script=script, data={"word3": "3"})
-    metadata = {"result": {"word1": "123"}, "data": {"word2": "2"}}
-    asset = {"data": {"word1": "1"}}
-    message = {"metadata": metadata, "asset": asset}
+    zenSha = ZenroomSha256(script=script)  # , data={"word3": "3"})
+    #    metadata = {"output": {")#word1": "123"}, "data": {"word2": "2"}}
+    #    asset = {"data": {"word1": "1"}}
+    message = {"word3": "3", "word1": "1", "word2": "2", "output": {"word1": "123"}}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
 
@@ -216,11 +218,7 @@ def test_valid_keys():
         },
     )
 
-    metadata = {
-        "result": {"output": ["ok"]},
-    }
-    asset = {}
-    message = {"metadata": metadata, "asset": asset}
+    message = {"output": ["ok"]}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
     zenSha = ZenroomSha256(
@@ -236,10 +234,6 @@ def test_valid_keys():
         },
     )
 
-    metadata = {
-        "result": {"output": ["ok"]},
-    }
-    asset = {}
-    message = {"metadata": metadata, "asset": asset}
+    message = {"output": ["ok"]}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
