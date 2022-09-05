@@ -70,8 +70,13 @@ def test_zenroom():
     print(alice)
     print("============== BOB KEYPAIR =================")
     print(bob)
-    input_script = { 
-        "input"  : {
+
+    # the result key is the expected result of the fulfill script
+    # it depends on the script, in this case I know that
+    #     `Then print the string 'ok'`,
+
+    input_script = {
+        "input": {
             "houses": [
                 {
                     "name": "Harry",
@@ -83,35 +88,15 @@ def test_zenroom():
                 },
             ],
         },
-        "output": ["ok"]
+        "output": ["ok"],
     }
-    #    asset = {
-    #        "data": {
-    #            "houses": [
-    #                {
-    #                    "name": "Harry",
-    #                    "team": "Gryffindor",
-    #                },
-    #                {
-    #                    "name": "Draco",
-    #                    "team": "Slytherin",
-    #                },
-    #            ],
-    #        }
-    #    }
+
     zen_public_keys = sk2pk("Alice", alice)
     zen_public_keys.update(sk2pk("Bob", bob))
 
     data = {"also": "more data"}
     print("============== PUBLIC IDENTITIES =================")
     print(zen_public_keys)
-
-    # the result key is the expected result of the fulfill script
-    # it depends on the script, in this case I know that
-    #     `Then print the string 'ok'`,
-    # results in
-    #     { "output": ["ok"] }
-    #metadata = {"result": {"output": ["ok"]}}
 
     fulfill_script = """
     Scenario 'ecdh': Bob verifies the signature from Alice
@@ -143,7 +128,7 @@ def test_zenroom():
         pass
 
     message = zenSha.sign(input_script, condition_script, alice)
-    #message = json.dumps(message)
+    # don't dump message like json.dumps(message) - beause this has already been performed by the sign-call
     assert zenSha.validate(message=message)
 
     # CRYPTO-CONDITIONS: generate the fulfillment uri
@@ -179,13 +164,13 @@ def test_wrong_data():
     )
 
 
-# @pytest.mark.skip # the zenroom script ist not executed
 def test_no_asset_no_metadata():
     script = "Given nothing\nThen print the string 'Hello'"
     zenSha = ZenroomSha256(script=script)
-    message = { "input": {}, "output":["Hello"]}
+    message = {"input": {}, "output": ["Hello"]}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
+
 
 def test_use_asset_and_metadata():
     script = """Given I have a 'string' named 'word1'
@@ -194,10 +179,8 @@ def test_use_asset_and_metadata():
         When I append 'word2' to 'word1'
         When I append 'word3' to 'word1'
         Then print the 'word1'"""
-    zenSha = ZenroomSha256(script=script)  # , data={"word3": "3"})
-    #    metadata = {"output": {")#word1": "123"}, "data": {"word2": "2"}}
-    #    asset = {"data": {"word1": "1"}}
-    message = {"input" : {"word3": "3", "word1": "1", "word2": "2" }, "output": {"word1": "123"}}
+    zenSha = ZenroomSha256(script=script)
+    message = {"input": {"word3": "3", "word1": "1", "word2": "2"}, "output": {"word1": "123"}}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
 

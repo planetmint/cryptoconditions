@@ -20,11 +20,11 @@ from cryptoconditions.schemas.fingerprint import ZenroomFingerprintContents
 class ZenroomException(Exception):
     pass
 
+
 class MalformedMessageException(Exception):
     def __init__(self, *args, **kwargs):
-        return super().__init__(
-            "The message has to include the" \
-            " result of the zenroom execution",*args, **kwargs)
+        return super().__init__("The message has to include the" " result of the zenroom execution", *args, **kwargs)
+
 
 class ZenroomSha256(BaseSha256):
 
@@ -168,18 +168,16 @@ class ZenroomSha256(BaseSha256):
             message["output"]
         except KeyError:
             message["output"] = {}
-        try: 
-            signature = {"signature" : message["signature" ] }
+        try:
+            signature = {"signature": message["signature"]}
         except KeyError:
             signature = None
-            
 
-        
         input_data = {} if self._data is None else self._data
-        input_data = {**input_data,  **message["input"] }
+        input_data = {**input_data, **message["input"]}
         if signature:
-            input_data = {**input_data,  **signature }
-        output_data = message["output"] 
+            input_data = {**input_data, **signature}
+        output_data = message["output"]
         return input_data, output_data
 
     # TODO Adapt according to outcomes of
@@ -213,17 +211,17 @@ class ZenroomSha256(BaseSha256):
             message = json.loads(message)
         except JSONDecodeError:
             return False
-        
+
         in_data, out_data = self.convert_input_message_2_data(message)
         result = zencode_exec(
             condition_script,
             keys=json.dumps({"keyring": private_keys}),
             data=json.dumps(in_data),
         )
-        
+
         logs = {"logs": result.logs}
         raw_sig = json.loads(result.output)
-        signature = { **raw_sig, **logs }
+        signature = {**raw_sig, **logs}
         message = {**message, **signature}
 
         return json.dumps(message)
@@ -305,7 +303,7 @@ class ZenroomSha256(BaseSha256):
             return False
         except ValueError:
             raise MalformedMessageException()
-        
+
         in_data, out_data = self.convert_input_message_2_data(message)
 
         # We can put pulic keys either in the keys or the data of zenroom
