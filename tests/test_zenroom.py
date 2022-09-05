@@ -31,7 +31,7 @@ GENERATE_KEYPAIR = """Rule input encoding base58
     Given that I am known as 'Pippo'
     When I create the ecdh key
     When I create the testnet key
-    Then print data"""
+    Then print keyring"""
 
 
 def genkey():
@@ -70,17 +70,20 @@ def test_zenroom():
     print(alice)
     print("============== BOB KEYPAIR =================")
     print(bob)
-    script = {
-        "houses": [
-            {
-                "name": "Harry",
-                "team": "Gryffindor",
-            },
-            {
-                "name": "Draco",
-                "team": "Slytherin",
-            },
-        ],
+    input_script = { 
+        "input"  : {
+            "houses": [
+                {
+                    "name": "Harry",
+                    "team": "Gryffindor",
+                },
+                {
+                    "name": "Draco",
+                    "team": "Slytherin",
+                },
+            ],
+        },
+        "output": ["ok"]
     }
     #    asset = {
     #        "data": {
@@ -108,7 +111,7 @@ def test_zenroom():
     #     `Then print the string 'ok'`,
     # results in
     #     { "output": ["ok"] }
-    metadata = {"result": {"output": ["ok"]}}
+    #metadata = {"result": {"output": ["ok"]}}
 
     fulfill_script = """
     Scenario 'ecdh': Bob verifies the signature from Alice
@@ -123,9 +126,7 @@ def test_zenroom():
 
     # CRYPTO-CONDITIONS: generate the condition uri
     condition_uri = zenSha.condition.serialize_uri()
-    # message = {"asset": asset, "metadata": metadata}
-    message = script
-    message = json.dumps(message)
+    input_script = json.dumps(input_script)
     print("====== GENERATE RESULT (METADATA) =======")
     condition_script = """
         Scenario 'ecdh': create the signature of an object
@@ -137,11 +138,12 @@ def test_zenroom():
 
     # THIS FILLS THE METADATA WITH THE RESULT
     try:
-        assert not zenSha.validate(message=message)
+        assert not zenSha.validate(message=input_script)
     except:
         pass
 
-    message = zenSha.sign(message, condition_script, alice)
+    message = zenSha.sign(input_script, condition_script, alice)
+    #message = json.dumps(message)
     assert zenSha.validate(message=message)
 
     # CRYPTO-CONDITIONS: generate the fulfillment uri
@@ -179,24 +181,11 @@ def test_wrong_data():
 
 # @pytest.mark.skip # the zenroom script ist not executed
 def test_no_asset_no_metadata():
-    script = """"Given nothing
-        Then print the string 'Hello'"""
+    script = "Given nothing\nThen print the string 'Hello'"
     zenSha = ZenroomSha256(script=script)
-    #message = {"output":["Hello"]}
-    message = {}
+    message = { "input": {}, "output":["Hello"]}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
-
-def test_no_asset_no_metadata2():
-    script = """"Given I have a 'string' named 'test'
-        Then print the string 'Hello'"""
-    zenSha = ZenroomSha256(script=script)
-    #message = {"output":["Hello"]}
-    message = { "test": "testvalue"}
-    message = json.dumps(message)
-    assert zenSha.validate(message=message)
-
-
 
 def test_use_asset_and_metadata():
     script = """Given I have a 'string' named 'word1'
@@ -208,7 +197,7 @@ def test_use_asset_and_metadata():
     zenSha = ZenroomSha256(script=script)  # , data={"word3": "3"})
     #    metadata = {"output": {")#word1": "123"}, "data": {"word2": "2"}}
     #    asset = {"data": {"word1": "1"}}
-    message = {"word3": "3", "word1": "1", "word2": "2", "output": {"word1": "123"}}
+    message = {"input" : {"word3": "3", "word1": "1", "word2": "2" }, "output": {"word1": "123"}}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
 

@@ -159,6 +159,29 @@ class ZenroomSha256(BaseSha256):
     def to_asn1_dict(self):
         return {self.TYPE_ASN1: self.asn1_dict_payload}
 
+    def convert_input_message_2_data(self, message):
+        try:
+            message["input"]
+        except KeyError:
+            message["input"] = {}
+        try:
+            message["output"]
+        except KeyError:
+            message["output"] = {}
+        try: 
+            signature = {"signature" : message["signature" ] }
+        except KeyError:
+            signature = None
+            
+
+        
+        input_data = {} if self._data is None else self._data
+        input_data = {**input_data,  **message["input"] }
+        if signature:
+            input_data = {**input_data,  **signature }
+        output_data = message["output"] 
+        return input_data, output_data
+
     # TODO Adapt according to outcomes of
     # https://github.com/rfcs/crypto-conditions/issues/16
     def to_dict(self):
@@ -186,28 +209,22 @@ class ZenroomSha256(BaseSha256):
     # only time we need this (e.g. we could produce a bitcoin signed transaction and
     # the code would be different)
     def sign(self, message, condition_script, private_keys):
-        message = json.loads(message)
-        data = self._data if self._data is not None else {}
         try:
-            # data["asset"] = message["asset"]["data"]
-            data = message
-        except KeyError:
-            # If the message doesn't have a asset key
-            # go on without setting the asset in the data
-            pass
-
+            message = json.loads(message)
+        except JSONDecodeError:
+            return False
+        
+        in_data, out_data = self.convert_input_message_2_data(message)
         result = zencode_exec(
             condition_script,
             keys=json.dumps({"keyring": private_keys}),
-            data=json.dumps(data),
+            data=json.dumps(in_data),
         )
-        if not "signature" in message.keys() or not message["signature"]:
-            message["signature"] = {}
-        message["signature"].update({"signature": json.loads(result.output), "logs": result.logs})
-
-        if not "output" in message.keys() or not message["signature"]:
-            message["output"] = {}
-        message["signature"].update({"logs": result.logs})
+        
+        logs = {"logs": result.logs}
+        raw_sig = json.loads(result.output)
+        signature = { **raw_sig, **logs }
+        message = {**message, **signature}
 
         return json.dumps(message)
 
@@ -284,18 +301,15 @@ class ZenroomSha256(BaseSha256):
         """
         try:
             message = json.loads(message)
-            message["output"]
         except JSONDecodeError:
             return False
         except ValueError:
             raise MalformedMessageException()
-        except KeyError:
-            pass #raise MalformedMessageException()
-        data = {} if self._data is None else self._data
-        data = message
+        
+        in_data, out_data = self.convert_input_message_2_data(message)
 
         # We can put pulic keys either in the keys or the data of zenroom
-        result = zencode_exec(self.script, keys=json.dumps(self._keys), data=json.dumps(data))
+        result = zencode_exec(self.script, keys=json.dumps(self._keys), data=json.dumps(in_data))
         if len(result.output) == 0 and len(result.logs) > 0:
             return False
 
