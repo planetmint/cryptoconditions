@@ -75,7 +75,7 @@ def test_zenroom():
     # it depends on the script, in this case I know that
     #     `Then print the string 'ok'`,
 
-    input_script = {
+    script_input = {
         "input": {
             "houses": [
                 {
@@ -111,7 +111,7 @@ def test_zenroom():
 
     # CRYPTO-CONDITIONS: generate the condition uri
     condition_uri = zenSha.condition.serialize_uri()
-    input_script = json.dumps(input_script)
+    script_input = json.dumps(script_input)
     print("====== GENERATE RESULT (METADATA) =======")
     condition_script = """
         Scenario 'ecdh': create the signature of an object
@@ -123,11 +123,11 @@ def test_zenroom():
 
     # THIS FILLS THE METADATA WITH THE RESULT
     try:
-        assert not zenSha.validate(message=input_script)
+        assert not zenSha.validate(message=script_input)
     except:
         pass
 
-    message = zenSha.sign(input_script, condition_script, alice)
+    message = zenSha.sign(script_input, condition_script, alice)
     # don't dump message like json.dumps(message) - beause this has already been performed by the sign-call
     assert zenSha.validate(message=message)
 
