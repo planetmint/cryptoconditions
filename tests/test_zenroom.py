@@ -179,12 +179,23 @@ def test_wrong_data():
 
 # @pytest.mark.skip # the zenroom script ist not executed
 def test_no_asset_no_metadata():
-    script = """Given nothing
-    Then print the string 'Hello'"""
+    script = """"Given nothing
+        Then print the string 'Hello'"""
     zenSha = ZenroomSha256(script=script)
-    message = {"output": ["Hello"]}
+    #message = {"output":["Hello"]}
+    message = {}
     message = json.dumps(message)
     assert zenSha.validate(message=message)
+
+def test_no_asset_no_metadata2():
+    script = """"Given I have a 'string' named 'test'
+        Then print the string 'Hello'"""
+    zenSha = ZenroomSha256(script=script)
+    #message = {"output":["Hello"]}
+    message = { "test": "testvalue"}
+    message = json.dumps(message)
+    assert zenSha.validate(message=message)
+
 
 
 def test_use_asset_and_metadata():

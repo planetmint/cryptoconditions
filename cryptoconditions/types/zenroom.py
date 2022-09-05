@@ -290,7 +290,7 @@ class ZenroomSha256(BaseSha256):
         except ValueError:
             raise MalformedMessageException()
         except KeyError:
-            pass
+            pass #raise MalformedMessageException()
         data = {} if self._data is None else self._data
         data = message
 
