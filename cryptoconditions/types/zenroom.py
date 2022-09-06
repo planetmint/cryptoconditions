@@ -220,7 +220,10 @@ class ZenroomSha256(BaseSha256):
         )
 
         logs = {"logs": result.logs}
-        raw_sig = json.loads(result.output)
+        raw_sig = result.output
+        if len(raw_sig) == 0:
+            raw_sig = '{}'
+        raw_sig = json.loads(raw_sig)
         signature = {**raw_sig, **logs}
         message = {**message, **signature}
 
