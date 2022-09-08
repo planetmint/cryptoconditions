@@ -121,7 +121,13 @@ def test_valid_signature( ):
 
     message = zenSha.sign(script_input, condictionalscript, alice)
     # don't dump message like json.dumps(message) - beause this has already been performed by the sign-call
-    assert zenSha.validate(message=message)
+    output = json.loads(message)
+    output["input"]["signature"]= output["output"]["signature"] # verify input signature
+    del output["output"]["signature"]
+    del output["output"]["logs"]
+    output["output"] =["ok"] # define expected output that is to be compared
+    input_msg =json.dumps(output)
+    assert zenSha.validate(message=input_msg)
 
     # CRYPTO-CONDITIONS: generate the fulfillment uri
     fulfillment_uri = zenSha.serialize_uri()

@@ -168,15 +168,9 @@ class ZenroomSha256(BaseSha256):
             message["output"]
         except KeyError:
             message["output"] = {}
-        try:
-            signature = {"signature": message["signature"]}
-        except KeyError:
-            signature = None
 
         input_data = {} if self._data is None else self._data
         input_data = {**input_data, **message["input"]}
-        if signature:
-            input_data = {**input_data, **signature}
         output_data = message["output"]
         return input_data, output_data
 
@@ -219,14 +213,10 @@ class ZenroomSha256(BaseSha256):
             data=json.dumps(in_data),
         )
 
-        logs = {"logs": result.logs}
-        raw_sig = result.output
-        if len(raw_sig) == 0:
-            raw_sig = '{}'
-        raw_sig = json.loads(raw_sig)
-        signature = {**raw_sig, **logs}
-        message = {**message, **signature}
-
+        output = result.output if len(result.output) > 0 else "{}"
+        output = json.loads(output)
+        response  = { "output": { **output, "logs": result.logs} }
+        message = { **message, **response }
         return json.dumps(message)
 
     # TODO Adapt according to outcomes of
@@ -243,8 +233,7 @@ class ZenroomSha256(BaseSha256):
             "script": base64_remove_padding(urlsafe_b64encode(self._script)),
             "data": base64_remove_padding(urlsafe_b64encode(self._data)),
             "keys": base64_remove_padding(urlsafe_b64encode(self._keys)),
-            # 'conf': base64_remove_padding(
-            #     urlsafe_b64encode(self.conf)),
+
         }
 
     # TODO Adapt according to outcomes of
