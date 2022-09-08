@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.10.0 (2022-09-05)
+0.10.0 (2022-09-08)
 ------------------
 
-* Integrated zenroom calling convention as defined in PRP 13
+* Integrated zenroom calling convention as defined in PRP 13 (breaking changes)
 * bumped base58 versions
 * improved linting
 * added audit
