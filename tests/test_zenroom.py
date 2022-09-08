@@ -73,7 +73,7 @@ fulfillscript = """
     Then print the string 'ok'
     """
 
-condictionalscript ="""
+condictionalscript = """
         Scenario 'ecdh': create the signature of an object
         Given I have the 'keyring'
         Given that I have a 'string dictionary' named 'houses'
@@ -81,7 +81,8 @@ condictionalscript ="""
         Then print the 'signature'
         """
 
-def test_valid_signature( ):
+
+def test_valid_signature():
     alice, bob = genkey(), genkey()
     # the result key is the expected result of the fulfill script
     # it depends on the script, in this case I know that
@@ -122,11 +123,11 @@ def test_valid_signature( ):
     message = zenSha.sign(script_input, condictionalscript, alice)
     # don't dump message like json.dumps(message) - beause this has already been performed by the sign-call
     output = json.loads(message)
-    output["input"]["signature"]= output["output"]["signature"] # verify input signature
+    output["input"]["signature"] = output["output"]["signature"]  # verify input signature
     del output["output"]["signature"]
     del output["output"]["logs"]
-    output["output"] =["ok"] # define expected output that is to be compared
-    input_msg =json.dumps(output)
+    output["output"] = ["ok"]  # define expected output that is to be compared
+    input_msg = json.dumps(output)
     assert zenSha.validate(message=input_msg)
 
     # CRYPTO-CONDITIONS: generate the fulfillment uri
@@ -144,15 +145,14 @@ def test_valid_signature( ):
     assert ff_from_uri_.keys == zenSha.keys
 
 
-def test_invalid_signing_call( ):
+def test_invalid_signing_call():
     alice, bob = genkey(), genkey()
     # the result key is the expected result of the fulfill script
     # it depends on the script, in this case I know that
     #     `Then print the string 'ok'`,
 
     script_input = {
-        "input": {
-        },
+        "input": {},
         "output": ["ok"],
     }
 

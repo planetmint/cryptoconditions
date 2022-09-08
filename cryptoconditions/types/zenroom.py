@@ -215,8 +215,8 @@ class ZenroomSha256(BaseSha256):
 
         output = result.output if len(result.output) > 0 else "{}"
         output = json.loads(output)
-        response  = { "output": { **output, "logs": result.logs} }
-        message = { **message, **response }
+        response = {"output": {**output, "logs": result.logs}}
+        message = {**message, **response}
         return json.dumps(message)
 
     # TODO Adapt according to outcomes of
@@ -233,7 +233,6 @@ class ZenroomSha256(BaseSha256):
             "script": base64_remove_padding(urlsafe_b64encode(self._script)),
             "data": base64_remove_padding(urlsafe_b64encode(self._data)),
             "keys": base64_remove_padding(urlsafe_b64encode(self._keys)),
-
         }
 
     # TODO Adapt according to outcomes of
