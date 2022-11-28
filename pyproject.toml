@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cryptoconditions"
+name = "planetmint-cryptoconditions"
 version = "0.11.0"
 description = "Multi-algorithm, multi-level, multi-signature format for expressing conditions and fulfillments according to the Interledger Protocol (ILP)."
 authors = ["Cryptoconditions contributors <contact@ipdb.global>"]
@@ -34,6 +34,7 @@ cryptography = "3.4.7"
 ipdb = "^0.13.9"
 ipython = "^8.5.0"
 twine = "^4.0.1"
+black = {version = "^22.10.0", allow-prereleases = true}
 
 [tool.poetry.group.test.dependencies]
 coverage = "^6.4.4"
