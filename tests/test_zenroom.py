@@ -35,7 +35,7 @@ GENERATE_KEYPAIR = """Rule input encoding base58
 
 
 def genkey():
-    return json.loads(zencode_exec(GENERATE_KEYPAIR).output)["keyring"]
+    return json.loads(zencode_exec(GENERATE_KEYPAIR).output)
 
 
 # There is not a unique way of generating the public
@@ -56,7 +56,7 @@ SK_TO_PK = """Scenario 'ecdh': Create the keypair
 
 
 def sk2pk(name, keys):
-    return json.loads(zencode_exec(SK_TO_PK.format(name), keys=json.dumps({"keyring": keys})).output)
+    return json.loads(zencode_exec(SK_TO_PK.format(name), keys=json.dumps(keys)).output)
 
 
 # Alice assert the composition of the houses

@@ -209,7 +209,7 @@ class ZenroomSha256(BaseSha256):
         in_data, out_data = self.convert_input_message_2_data(message)
         result = zencode_exec(
             condition_script,
-            keys=json.dumps({"keyring": private_keys}),
+            keys=json.dumps(private_keys),
             data=json.dumps(in_data),
         )
 
