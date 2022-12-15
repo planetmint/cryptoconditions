@@ -195,6 +195,11 @@ def test_wrong_data():
         keys={},
         data={},
     )
+    ZenroomSha256(
+        script="Given nothing",
+        keys=None,
+        data=None,
+    )
 
 
 def test_no_asset_no_metadata():
