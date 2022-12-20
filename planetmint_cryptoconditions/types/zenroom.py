@@ -272,9 +272,9 @@ class ZenroomSha256(BaseSha256):
 
     def parse_asn1_dict_payload(self, data):
         self._script = data["script"].decode()
-        tmp_data = data["data"].decode("utf8") if data["data"].decode("utf8") != 'null' else 'None'
+        tmp_data = data["data"].decode("utf8") if data["data"].decode("utf8") != "null" else "None"
         self._data = literal_eval(tmp_data)
-        tmp_keys = data["keys"].decode("utf8") if data["keys"].decode("utf8") != 'null' else 'None'
+        tmp_keys = data["keys"].decode("utf8") if data["keys"].decode("utf8") != "null" else "None"
         self._keys = literal_eval(tmp_keys)
 
     def validate(self, *, message):
