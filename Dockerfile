@@ -21,5 +21,8 @@ COPY ./README.rst /usr/src/app/README.rst
 COPY ./tests /usr/src/app/tests
 COPY ./tox.ini /usr/src/app/tox.ini
 
-RUN poetry config virtualenvs.create false \
-    && poetry install
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-root
+
+RUN adduser --system --group nonroot
+USER nonroot
