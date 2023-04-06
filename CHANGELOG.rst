@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.1 (2023-04-06)
+------------------
+* fixed copy-paste bug: subfulfillment vs subcondition in threshold.py
+
+
 1.2.0 (2023-03-23)
 ------------------
 * removed zenroom signing
