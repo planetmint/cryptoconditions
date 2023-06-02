@@ -26,7 +26,7 @@ python = "^3.9"
 base58 = "2.1.1"
 PyNaCl = "1.4.0"
 pyasn1 = "0.4.8"
-cryptography = "39.0.1"
+cryptography = "41.0.0"
 setuptools = "^67.2.0"
 
 
