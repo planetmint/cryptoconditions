@@ -40,7 +40,7 @@ jobs:
           python-version: 3.9
 
       - name: Install pip-audit
-        run: pip install --upgrade pip
+        run: pip install --upgrade pip pip-audit
 
       - name: Setup poetry
         uses: Gr1N/setup-poetry@v8
