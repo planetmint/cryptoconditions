@@ -49,7 +49,7 @@ jobs:
         run: poetry install
 
       - name: Audit dependencies
-        run: poetry run pip freeze > requirements.txt && poetry run pip-audit
+        run: poetry run pip freeze > requirements.txt && poetry run pip-audit -r ./requiremnts.txt
 
   test:
     needs: lint
