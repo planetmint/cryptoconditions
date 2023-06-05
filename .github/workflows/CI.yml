@@ -39,17 +39,17 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install pip-audit
-        run: pip install --upgrade pip pip-audit
+      - name: Setup poetry
+        uses: Gr1N/setup-poetry@v8
 
       - name: Install dependencies
-        run: pip install .
+        run: poetry install
 
       - name: Create requirements.txt
-        run: pip freeze > requirements.txt
+        run: poetry run pip freeze > requirements.txt
 
       - name: Audit dependencies
-        run: pip-audit
+        run: poetry run pip-audit
 
   test:
     needs: lint
