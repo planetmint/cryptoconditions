@@ -48,11 +48,8 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Create requirements.txt
-        run: poetry run pip freeze > requirements.txt
-
       - name: Audit dependencies
-        run: poetry run pip-audit
+        run: poetry run pip freeze > requirements.txt && poetry run pip-audit
 
   test:
     needs: lint
