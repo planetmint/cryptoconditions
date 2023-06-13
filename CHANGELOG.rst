@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.2 (2023-06-13)
+------------------
+* fixed CI issues and dependencies: bumped versions of cryptography, requests
+
+
 1.2.1 (2023-04-06)
 ------------------
 * fixed copy-paste bug: subfulfillment vs subcondition in threshold.py
